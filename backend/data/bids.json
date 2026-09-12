@@ -1,0 +1,385 @@
+[
+  {
+    "id": "bid_001",
+    "tender_id": "tender_001",
+    "contractor_id": "user_002",
+    "contractor_name": "ABC Technologies Pvt Ltd",
+    "submitted_at": "2026-09-10",
+    "status": "submitted",
+    "documents": [
+      "Turnover_Certificate_FY2025.pdf",
+      "Experience_Certificate.pdf",
+      "ISO_9001_Certificate.pdf",
+      "Technical_Specifications.pdf",
+      "GST_Certificate.pdf",
+      "Company_Registration.pdf",
+      "EMD_Receipt.pdf",
+      "GeM_Registration.pdf"
+    ],
+    "analysis": {
+      "overall_score": 82,
+      "scores": {
+        "eligibility": 75,
+        "technical": 88,
+        "financial": 92,
+        "documentation": 80
+      },
+      "risk_level": "MEDIUM",
+      "pass_count": 9,
+      "review_count": 2,
+      "fail_count": 1,
+      "evidence_coverage": 94,
+      "recommendation": "REVIEW REQUIRED",
+      "critical_issues": [
+        "Experience requirement not fully satisfied — 3.5 years found vs 5 years required.",
+        "ISO 27001 certificate not provided — marked as non-mandatory but recommended."
+      ],
+      "requirements_analysis": [
+        {
+          "req_id": "req_001",
+          "status": "PASS",
+          "found_value": "₹12.4 Crore",
+          "required_value": "₹10 Crore",
+          "evidence_doc": "Turnover_Certificate_FY2025.pdf",
+          "evidence_page": 3,
+          "reason": "Bidder's annual turnover of ₹12.4 Crore exceeds the minimum required ₹10 Crore. Certificate issued by Chartered Accountant.",
+          "risk": null
+        },
+        {
+          "req_id": "req_002",
+          "status": "PASS",
+          "found_value": "Positive (₹3.2 Cr)",
+          "required_value": "Positive",
+          "evidence_doc": "Turnover_Certificate_FY2025.pdf",
+          "evidence_page": 5,
+          "reason": "Net worth of ₹3.2 Crore confirmed as positive per audited balance sheet.",
+          "risk": null
+        },
+        {
+          "req_id": "req_003",
+          "status": "FAIL",
+          "found_value": "3.5 years",
+          "required_value": "5 years",
+          "evidence_doc": "Experience_Certificate.pdf",
+          "evidence_page": 7,
+          "reason": "Bidder has provided evidence of only 3.5 years of relevant IT infrastructure experience. Required minimum is 5 years.",
+          "risk": "HIGH"
+        },
+        {
+          "req_id": "req_004",
+          "status": "PASS",
+          "found_value": "3 government projects",
+          "required_value": "2 projects",
+          "evidence_doc": "Experience_Certificate.pdf",
+          "evidence_page": 9,
+          "reason": "Bidder has completed 3 government/PSU IT projects, exceeding the minimum requirement of 2.",
+          "risk": null
+        },
+        {
+          "req_id": "req_005",
+          "status": "PASS",
+          "found_value": "Valid till Dec 2027",
+          "required_value": "Valid certificate",
+          "evidence_doc": "ISO_9001_Certificate.pdf",
+          "evidence_page": 1,
+          "reason": "ISO 9001:2015 certificate is valid and expires December 2027, well within the tender validity period.",
+          "risk": null
+        },
+        {
+          "req_id": "req_006",
+          "status": "REVIEW",
+          "found_value": "Not Provided",
+          "required_value": "Valid certificate",
+          "evidence_doc": null,
+          "evidence_page": null,
+          "reason": "ISO 27001 certificate not provided. This is a non-mandatory requirement but its absence may affect evaluation scoring.",
+          "risk": "LOW"
+        },
+        {
+          "req_id": "req_007",
+          "status": "PASS",
+          "found_value": "64-core, 512GB RAM, 12TB NVMe SSD",
+          "required_value": "64-core, 256GB RAM, 10TB SSD",
+          "evidence_doc": "Technical_Specifications.pdf",
+          "evidence_page": 4,
+          "reason": "Proposed server specifications exceed minimum requirements on all parameters.",
+          "risk": null
+        },
+        {
+          "req_id": "req_008",
+          "status": "REVIEW",
+          "found_value": "2 years (standard) + 1 year extended (chargeable)",
+          "required_value": "3 years",
+          "evidence_doc": "Technical_Specifications.pdf",
+          "evidence_page": 12,
+          "reason": "Standard warranty is 2 years. Extended 3rd year warranty requires additional cost. Needs clarification whether comprehensive 3-year warranty is included in bid price.",
+          "risk": "MEDIUM"
+        },
+        {
+          "req_id": "req_009",
+          "status": "PASS",
+          "found_value": "27AABCS1429B1Z1",
+          "required_value": "Valid GST",
+          "evidence_doc": "GST_Certificate.pdf",
+          "evidence_page": 1,
+          "reason": "Valid GST registration certificate with GSTIN 27AABCS1429B1Z1 confirmed.",
+          "risk": null
+        },
+        {
+          "req_id": "req_010",
+          "status": "PASS",
+          "found_value": "CIN: U72900MH2022PTC380421",
+          "required_value": "Valid registration",
+          "evidence_doc": "Company_Registration.pdf",
+          "evidence_page": 1,
+          "reason": "Certificate of Incorporation issued by MCA with CIN U72900MH2022PTC380421 is valid.",
+          "risk": null
+        },
+        {
+          "req_id": "req_011",
+          "status": "PASS",
+          "found_value": "₹2.5 Lakh (Bank Guarantee)",
+          "required_value": "₹2.5 Lakh",
+          "evidence_doc": "EMD_Receipt.pdf",
+          "evidence_page": 1,
+          "reason": "EMD of ₹2.5 Lakh submitted via Bank Guarantee from SBI dated 08-Sep-2026.",
+          "risk": null
+        },
+        {
+          "req_id": "req_012",
+          "status": "PASS",
+          "found_value": "GeM Seller ID: GEM-ABC-2024-001",
+          "required_value": "Active GeM account",
+          "evidence_doc": "GeM_Registration.pdf",
+          "evidence_page": 1,
+          "reason": "Active GeM seller account confirmed with Seller ID GEM-ABC-2024-001.",
+          "risk": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "bid_002",
+    "tender_id": "tender_001",
+    "contractor_id": "user_003",
+    "contractor_name": "XYZ Solutions Pvt Ltd",
+    "submitted_at": "2026-09-11",
+    "status": "submitted",
+    "documents": [
+      "Financial_Statements.pdf",
+      "Experience_Proof.pdf",
+      "ISO_Certificates.pdf",
+      "Tech_Specs.pdf",
+      "GST_Reg.pdf",
+      "Inc_Certificate.pdf",
+      "EMD_Bank_Guarantee.pdf",
+      "GeM_Cert.pdf"
+    ],
+    "analysis": {
+      "overall_score": 91,
+      "scores": {
+        "eligibility": 92,
+        "technical": 95,
+        "financial": 88,
+        "documentation": 90
+      },
+      "risk_level": "LOW",
+      "pass_count": 11,
+      "review_count": 1,
+      "fail_count": 0,
+      "evidence_coverage": 97,
+      "recommendation": "APPROVED",
+      "critical_issues": [],
+      "requirements_analysis": [
+        {
+          "req_id": "req_001",
+          "status": "PASS",
+          "found_value": "₹18.7 Crore",
+          "required_value": "₹10 Crore",
+          "evidence_doc": "Financial_Statements.pdf",
+          "evidence_page": 4,
+          "reason": "Annual turnover of ₹18.7 Crore significantly exceeds requirement.",
+          "risk": null
+        },
+        {
+          "req_id": "req_002",
+          "status": "PASS",
+          "found_value": "Positive (₹7.8 Cr)",
+          "required_value": "Positive",
+          "evidence_doc": "Financial_Statements.pdf",
+          "evidence_page": 6,
+          "reason": "Net worth confirmed positive at ₹7.8 Crore.",
+          "risk": null
+        },
+        {
+          "req_id": "req_003",
+          "status": "PASS",
+          "found_value": "8 years",
+          "required_value": "5 years",
+          "evidence_doc": "Experience_Proof.pdf",
+          "evidence_page": 3,
+          "reason": "8 years of relevant IT infrastructure experience documented.",
+          "risk": null
+        },
+        {
+          "req_id": "req_004",
+          "status": "PASS",
+          "found_value": "6 government projects",
+          "required_value": "2 projects",
+          "evidence_doc": "Experience_Proof.pdf",
+          "evidence_page": 5,
+          "reason": "6 completed government/PSU projects documented.",
+          "risk": null
+        },
+        {
+          "req_id": "req_005",
+          "status": "PASS",
+          "found_value": "Valid till Mar 2028",
+          "required_value": "Valid certificate",
+          "evidence_doc": "ISO_Certificates.pdf",
+          "evidence_page": 1,
+          "reason": "ISO 9001:2015 valid till March 2028.",
+          "risk": null
+        },
+        {
+          "req_id": "req_006",
+          "status": "PASS",
+          "found_value": "Valid till Jan 2028",
+          "required_value": "Valid certificate",
+          "evidence_doc": "ISO_Certificates.pdf",
+          "evidence_page": 3,
+          "reason": "ISO 27001 certificate provided, valid till January 2028.",
+          "risk": null
+        },
+        {
+          "req_id": "req_007",
+          "status": "PASS",
+          "found_value": "96-core, 512GB RAM, 20TB NVMe SSD",
+          "required_value": "64-core, 256GB RAM, 10TB SSD",
+          "evidence_doc": "Tech_Specs.pdf",
+          "evidence_page": 6,
+          "reason": "All server specs exceed requirements significantly.",
+          "risk": null
+        },
+        {
+          "req_id": "req_008",
+          "status": "REVIEW",
+          "found_value": "3 years (conditions apply)",
+          "required_value": "3 years",
+          "evidence_doc": "Tech_Specs.pdf",
+          "evidence_page": 14,
+          "reason": "3-year warranty offered but SLA terms require review — onsite response time not clearly specified.",
+          "risk": "LOW"
+        },
+        {
+          "req_id": "req_009",
+          "status": "PASS",
+          "found_value": "29AADCX1234B1ZP",
+          "required_value": "Valid GST",
+          "evidence_doc": "GST_Reg.pdf",
+          "evidence_page": 1,
+          "reason": "Valid GST registration confirmed.",
+          "risk": null
+        },
+        {
+          "req_id": "req_010",
+          "status": "PASS",
+          "found_value": "CIN: U72900KA2018PTC112233",
+          "required_value": "Valid registration",
+          "evidence_doc": "Inc_Certificate.pdf",
+          "evidence_page": 1,
+          "reason": "Valid certificate of incorporation confirmed.",
+          "risk": null
+        },
+        {
+          "req_id": "req_011",
+          "status": "PASS",
+          "found_value": "₹2.5 Lakh (Bank Guarantee)",
+          "required_value": "₹2.5 Lakh",
+          "evidence_doc": "EMD_Bank_Guarantee.pdf",
+          "evidence_page": 1,
+          "reason": "EMD submitted via Bank Guarantee from HDFC Bank.",
+          "risk": null
+        },
+        {
+          "req_id": "req_012",
+          "status": "PASS",
+          "found_value": "GeM Seller ID: GEM-XYZ-2022-004",
+          "required_value": "Active GeM account",
+          "evidence_doc": "GeM_Cert.pdf",
+          "evidence_page": 1,
+          "reason": "Active GeM seller account confirmed.",
+          "risk": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "bid_003",
+    "tender_id": "tender_001",
+    "contractor_id": "user_002",
+    "contractor_name": "TechNova Systems",
+    "submitted_at": "2026-09-09",
+    "status": "submitted",
+    "documents": [
+      "Balance_Sheet.pdf",
+      "Exp_Cert.pdf",
+      "ISO_Cert.pdf",
+      "Tech_Doc.pdf",
+      "GST.pdf"
+    ],
+    "analysis": {
+      "overall_score": 67,
+      "scores": {
+        "eligibility": 55,
+        "technical": 72,
+        "financial": 70,
+        "documentation": 60
+      },
+      "risk_level": "HIGH",
+      "pass_count": 7,
+      "review_count": 2,
+      "fail_count": 3,
+      "evidence_coverage": 78,
+      "recommendation": "REJECTED",
+      "critical_issues": [
+        "Annual turnover below required threshold.",
+        "Experience requirement not met.",
+        "EMD/Bid security document missing."
+      ],
+      "requirements_analysis": []
+    }
+  },
+  {
+    "id": "bid_004",
+    "tender_id": "tender_001",
+    "contractor_id": "user_002",
+    "contractor_name": "DigitalCore Pvt Ltd",
+    "submitted_at": "2026-09-08",
+    "status": "submitted",
+    "documents": [
+      "Fin_Docs.pdf",
+      "Exp_Proof.pdf",
+      "Certifications.pdf",
+      "Specs.pdf",
+      "Legal_Docs.pdf"
+    ],
+    "analysis": {
+      "overall_score": 87,
+      "scores": {
+        "eligibility": 88,
+        "technical": 90,
+        "financial": 85,
+        "documentation": 88
+      },
+      "risk_level": "LOW",
+      "pass_count": 10,
+      "review_count": 2,
+      "fail_count": 0,
+      "evidence_coverage": 96,
+      "recommendation": "APPROVED",
+      "critical_issues": [],
+      "requirements_analysis": []
+    }
+  }
+]

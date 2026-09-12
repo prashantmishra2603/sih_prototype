@@ -1,0 +1,38 @@
+[
+  {
+    "id": "user_001",
+    "email": "officer@gem.gov.in",
+    "password": "officer123",
+    "name": "Rajesh Kumar",
+    "role": "provider",
+    "organization": "Ministry of Electronics & IT",
+    "designation": "Procurement Officer"
+  },
+  {
+    "id": "user_002",
+    "email": "abc@techcorp.com",
+    "password": "contractor123",
+    "name": "Anil Sharma",
+    "role": "contractor",
+    "organization": "ABC Technologies Pvt Ltd",
+    "gstin": "27AABCS1429B1Z1"
+  },
+  {
+    "id": "user_003",
+    "email": "xyz@solutions.com",
+    "password": "contractor123",
+    "name": "Priya Singh",
+    "role": "contractor",
+    "organization": "XYZ Solutions Pvt Ltd",
+    "gstin": "29AADCX1234B1ZP"
+  },
+  {
+    "id": "user_004",
+    "email": "officer2@gem.gov.in",
+    "password": "officer123",
+    "name": "Sunita Verma",
+    "role": "provider",
+    "organization": "Defence Research & Development",
+    "designation": "Senior Procurement Officer"
+  }
+]

@@ -1,0 +1,19 @@
+# Node / JS
+node_modules/
+dist/
+build/
+*.log
+
+# Python / FastAPI
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+env/
+
+# IDE / System
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
