@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Calendar, Tag, ArrowRight } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { getTenders } from '../../api/client';
 
 export default function BrowseTenders() {
@@ -29,15 +30,12 @@ export default function BrowseTenders() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <div></div>
-        </div>
+        <Topbar
+          title="Browse Available Tenders"
+          subtitle="Explore open procurement tenders and submit compliant bids"
+          showBack={true}
+        />
         <div className="page-content">
-          <div className="page-header">
-            <div className="page-title">Available GeM Tenders</div>
-            <div className="page-subtitle">Browse open tenders and submit your compliant bid</div>
-          </div>
-
           {/* Search */}
           <div style={{ position: 'relative', marginBottom: 24 }}>
             <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />

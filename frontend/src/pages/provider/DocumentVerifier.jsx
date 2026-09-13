@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Sidebar } from '../../components/Sidebar';
 import { Topbar } from '../../components/Topbar';
 import { useToast } from '../../components/Toast';
-import { FileText, Search, Plus, CheckCircle2, AlertTriangle, XCircle, Clock, ShieldCheck } from 'lucide-react';
+import { FileText, Search, Plus, CheckCircle2, AlertTriangle, XCircle, Clock, ShieldCheck, RefreshCw, Sparkles, Filter } from 'lucide-react';
+import { sound } from '../../utils/soundEffects';
 
 const INITIAL_DOCS = [
   { id: 1, name: 'GST Certificate', number: '07AAACT1234F1Z5', vendor: 'Sigma Electronics', status: 'invalid', icon: '📋', expiry: 'Expired Aug 2026', details: 'GST registration was cancelled on 12 Aug 2026. Bid cannot proceed without valid GSTIN.' },
@@ -25,7 +26,18 @@ export default function DocumentVerifier() {
   const [search, setSearch] = useState('');
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+
+  const triggerLoading = (ms = 350) => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), ms);
+  };
+
+  const handleFilterChange = (fId) => {
+    setFilter(fId);
+    triggerLoading(250);
+  };
 
   const filteredDocs = docs.filter((d) => {
     const matchFilter = filter === 'all' || d.status === filter;
@@ -59,57 +71,164 @@ export default function DocumentVerifier() {
         <Topbar title="Document Verification Engine" subtitle="AI-powered document authenticity and expiry tracking" />
 
         <div className="page-content">
-          <div className="section-header">
-            <div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>
-                Document <span className="gradient-text-green">Verification Engine</span>
-              </h2>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                Real-time authenticity, expiry tracking, and OCR validation
-              </p>
+          {/* Quick Metrics KPI Strip */}
+          <div className="stat-grid" style={{ marginBottom: 20 }}>
+            <div
+              className={`stat-card blue ${filter === 'all' ? 'active-stat-card' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleFilterChange('all')}
+            >
+              <div className="stat-icon blue">📁</div>
+              <div className="stat-value">{docs.length}</div>
+              <div className="stat-label">Total Documents</div>
+              <div className="stat-delta up">All categories active</div>
             </div>
-            <button className="btn btn-primary btn-sm" onClick={() => setShowUploadModal(true)}>
-              <Plus size={14} /> Add Document
-            </button>
+            <div
+              className={`stat-card green ${filter === 'valid' ? 'active-stat-card' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleFilterChange('valid')}
+            >
+              <div className="stat-icon green">✅</div>
+              <div className="stat-value">{docs.filter((d) => d.status === 'valid').length}</div>
+              <div className="stat-label">Valid &amp; Verified</div>
+              <div className="stat-delta up">100% authenticity match</div>
+            </div>
+            <div
+              className={`stat-card warn ${filter === 'warning' ? 'active-stat-card' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleFilterChange('warning')}
+            >
+              <div className="stat-icon warn">⚠️</div>
+              <div className="stat-value">{docs.filter((d) => d.status === 'warning').length}</div>
+              <div className="stat-label">Expiring Soon</div>
+              <div className="stat-delta down">Action required &lt; 30d</div>
+            </div>
+            <div
+              className={`stat-card red ${filter === 'invalid' ? 'active-stat-card' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleFilterChange('invalid')}
+            >
+              <div className="stat-icon red">❌</div>
+              <div className="stat-value">{docs.filter((d) => d.status === 'invalid').length}</div>
+              <div className="stat-label">Invalid / Flagged</div>
+              <div className="stat-delta down">Re-upload required</div>
+            </div>
           </div>
 
-          {/* Filters & Search */}
-          <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-            {[
-              { id: 'all', label: `All (${docs.length})` },
-              { id: 'valid', label: `✅ Valid (${docs.filter((d) => d.status === 'valid').length})` },
-              { id: 'warning', label: `⚠️ Expiring (${docs.filter((d) => d.status === 'warning').length})` },
-              { id: 'invalid', label: `❌ Invalid (${docs.filter((d) => d.status === 'invalid').length})` },
-              { id: 'pending', label: `🔄 Pending (${docs.filter((d) => d.status === 'pending').length})` },
-            ].map((f) => (
+          {/* Unified Verifier Action Toolbar: Add Document on LEFT with proper spacing, contained search on RIGHT */}
+          <div className="verifier-toolbar">
+            <div className="verifier-toolbar-left">
+              {/* Left-Aligned Add Document Button */}
               <button
-                key={f.id}
-                className={`btn btn-sm ${filter === f.id ? 'btn-primary' : 'btn-ghost'}`}
-                onClick={() => setFilter(f.id)}
+                className="btn btn-primary btn-sm"
+                onClick={() => {
+                  sound.playTap();
+                  setShowUploadModal(true);
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '9px 18px',
+                  fontWeight: 700,
+                  borderRadius: 10,
+                  boxShadow: 'var(--shadow-card)',
+                  whiteSpace: 'nowrap',
+                }}
               >
-                {f.label}
+                <Plus size={16} /> Add Document
               </button>
-            ))}
 
-            <div className="search-bar-wrap" style={{ marginLeft: 'auto' }}>
-              <Search className="search-icon" size={14} />
-              <input
-                type="text"
-                className="input-field btn-sm"
-                style={{ width: 240, paddingLeft: 34 }}
-                placeholder="Search vendor / doc type..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+              <div className="toolbar-divider" />
+
+              {/* Filter Pills */}
+              <div className="filter-pill-group">
+                {[
+                  { id: 'all', label: `All (${docs.length})` },
+                  { id: 'valid', label: `✅ Valid (${docs.filter((d) => d.status === 'valid').length})` },
+                  { id: 'warning', label: `⚠️ Expiring (${docs.filter((d) => d.status === 'warning').length})` },
+                  { id: 'invalid', label: `❌ Invalid (${docs.filter((d) => d.status === 'invalid').length})` },
+                  { id: 'pending', label: `🔄 Pending (${docs.filter((d) => d.status === 'pending').length})` },
+                ].map((f) => (
+                  <button
+                    key={f.id}
+                    className={`btn btn-sm ${filter === f.id ? 'btn-primary' : 'btn-ghost'}`}
+                    style={{ borderRadius: 8, padding: '6px 12px', fontSize: '0.8rem' }}
+                    onClick={() => handleFilterChange(f.id)}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="verifier-toolbar-right">
+              {/* Contained Search Bar - Stays strictly inside container bounds */}
+              <div className="verifier-search-box">
+                <Search size={15} className="verifier-search-icon" />
+                <input
+                  type="text"
+                  className="input-field btn-sm verifier-search-input"
+                  placeholder="Search vendor / doc..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                {search && (
+                  <button
+                    className="verifier-search-clear"
+                    onClick={() => setSearch('')}
+                    title="Clear search"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {/* Refresh / Re-scan button to showcase skeleton loader */}
+              <button
+                className="btn btn-ghost btn-sm"
+                onClick={() => triggerLoading(500)}
+                title="Refresh and simulate OCR scan"
+                style={{ padding: '8px 12px', borderRadius: 8 }}
+              >
+                <RefreshCw size={14} className={loading ? 'spin-anim' : ''} />
+              </button>
             </div>
           </div>
 
-          {/* Grid */}
-          {filteredDocs.length === 0 ? (
+          {/* Grid with Skeleton Loader */}
+          {loading ? (
+            <div className="doc-grid">
+              {Array.from({ length: 8 }).map((_, idx) => (
+                <div key={idx} className="skeleton-doc-card">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div className="skeleton-shimmer" style={{ width: 44, height: 44, borderRadius: 12 }} />
+                    <div className="skeleton-shimmer" style={{ width: 75, height: 24, borderRadius: 100 }} />
+                  </div>
+                  <div className="skeleton-shimmer" style={{ width: '70%', height: 18, marginTop: 14 }} />
+                  <div className="skeleton-shimmer" style={{ width: '45%', height: 12, marginTop: 6 }} />
+                  <div className="skeleton-shimmer" style={{ width: '55%', height: 14, marginTop: 8 }} />
+                  <div style={{ display: 'flex', gap: 8, marginTop: 'auto', paddingTop: 18 }}>
+                    <div className="skeleton-shimmer" style={{ width: 90, height: 32, borderRadius: 8 }} />
+                    <div className="skeleton-shimmer" style={{ width: 80, height: 32, borderRadius: 8 }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredDocs.length === 0 ? (
             <div className="card empty-state">
               <div className="empty-icon" style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
               <h3>No documents found</h3>
               <p>Try adjusting your search or filter criteria</p>
+              {search && (
+                <button
+                  className="btn btn-ghost btn-sm"
+                  style={{ marginTop: 12 }}
+                  onClick={() => setSearch('')}
+                >
+                  Clear Search Filter
+                </button>
+              )}
             </div>
           ) : (
             <div className="doc-grid">
@@ -169,10 +288,11 @@ export default function DocumentVerifier() {
             </div>
 
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-              <button className="btn btn-ghost btn-sm" onClick={() => setSelectedDoc(null)}>Close</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => { sound.playTap(); setSelectedDoc(null); }}>Close</button>
               <button
                 className="btn btn-primary btn-sm"
                 onClick={() => {
+                  sound.playPass();
                   showToast('Document re-verification queued with OCR model!', 'success');
                   setSelectedDoc(null);
                 }}
@@ -238,10 +358,11 @@ export default function DocumentVerifier() {
             </div>
 
             <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>
-              <button className="btn btn-ghost btn-sm" onClick={() => setShowUploadModal(false)}>Cancel</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => { sound.playTap(); setShowUploadModal(false); }}>Cancel</button>
               <button
                 className="btn btn-primary btn-sm"
                 onClick={() => {
+                  sound.playImport();
                   showToast('Document uploaded and queued for AI verification!', 'success');
                   setShowUploadModal(false);
                 }}

@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, CheckCircle2, FileSearch, BarChart3, ArrowRight, Zap, Eye, Users, Sparkles, Award } from 'lucide-react';
+import { Shield, CheckCircle2, FileSearch, BarChart3, ArrowRight, Zap, Eye, Users, Sparkles, Award, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { sound } from '../utils/soundEffects';
 
 const stats = [
   { value: '94%', label: 'Compliance Accuracy' },
@@ -11,12 +13,13 @@ const stats = [
 
 export default function Landing() {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', color: '#fff', overflowX: 'hidden' }}>
+    <div className="landing-page-wrap" style={{ minHeight: '100vh', overflowX: 'hidden' }}>
       {/* NAVBAR */}
-      <nav className="landing-nav" style={{ backdropFilter: 'blur(20px)', background: 'rgba(15, 23, 42, 0.8)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-        <div className="logo-badge">
+      <nav className="landing-nav">
+        <div className="logo-badge" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
           <div className="logo-icon" style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)', boxShadow: '0 0 15px rgba(16,185,129,0.5)' }}>🛡️</div>
           <div>
             <div className="logo-text" style={{ fontSize: '1.25rem', fontFamily: 'Space Grotesk', fontWeight: 800, letterSpacing: '-0.02em' }}>
@@ -25,9 +28,29 @@ export default function Landing() {
             <div className="logo-sub" style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>GeM Compliance Suite</div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 14 }}>
+
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <button
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            title={theme === 'cream' ? 'Switch to Dark Theme' : 'Switch to White Cream Theme'}
+            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            {theme === 'cream' ? (
+              <>
+                <Moon size={14} />
+                <span>Dark Theme</span>
+              </>
+            ) : (
+              <>
+                <Sun size={14} />
+                <span>White Cream</span>
+              </>
+            )}
+          </button>
+
           <Link to="/login" className="btn btn-ghost" style={{ fontWeight: 600 }}>Sign In</Link>
-          <button className="btn glowing-btn-emerald" onClick={() => navigate('/login')} style={{ padding: '8px 20px', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button className="btn glowing-btn-emerald" onClick={() => { sound.playTap(); navigate('/login'); }} style={{ padding: '8px 20px', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
             Launch Portal <ArrowRight size={15} />
           </button>
         </div>
@@ -61,10 +84,10 @@ export default function Landing() {
           </p>
 
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button className="btn glowing-btn-emerald" onClick={() => navigate('/login')} style={{ padding: '14px 32px', fontSize: '1rem', borderRadius: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button className="btn glowing-btn-emerald" onClick={() => { sound.playTap(); navigate('/login'); }} style={{ padding: '14px 32px', fontSize: '1rem', borderRadius: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
               <Shield size={18} /> Get Started Free
             </button>
-            <button className="btn btn-secondary" onClick={() => document.getElementById('demo-showcase').scrollIntoView({ behavior: 'smooth' })} style={{ padding: '14px 28px', fontSize: '1rem', borderRadius: 12, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }}>
+            <button className="btn btn-secondary" onClick={() => { sound.playTap(); document.getElementById('demo-showcase').scrollIntoView({ behavior: 'smooth' }); }} style={{ padding: '14px 28px', fontSize: '1rem', borderRadius: 12 }}>
               Explore Interface <ArrowRight size={16} />
             </button>
           </div>
@@ -159,8 +182,8 @@ export default function Landing() {
           <motion.div
             className="tagada-glass"
             style={{ padding: 32, cursor: 'pointer' }}
-            whileHover={{ scale: 1.02, borderColor: 'rgba(16,185,129,0.5)' }}
-            onClick={() => navigate('/login')}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => { sound.playTap(); navigate('/login'); }}
           >
             <div style={{ fontSize: '2.5rem', marginBottom: 14 }}>🏛️</div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: 8 }}>Procurement Officer</h3>
@@ -173,8 +196,8 @@ export default function Landing() {
           <motion.div
             className="tagada-glass"
             style={{ padding: 32, cursor: 'pointer' }}
-            whileHover={{ scale: 1.02, borderColor: 'rgba(59,130,246,0.5)' }}
-            onClick={() => navigate('/login')}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => { sound.playTap(); navigate('/login'); }}
           >
             <div style={{ fontSize: '2.5rem', marginBottom: 14 }}>🏢</div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: 8 }}>Contractor / Bidder</h3>

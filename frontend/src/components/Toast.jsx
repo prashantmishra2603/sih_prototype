@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from 'lucide-react';
+import { sound } from '../utils/soundEffects';
 
 const ToastContext = createContext({
   showToast: (msg, type = 'info') => {},
@@ -11,6 +12,14 @@ export function ToastProvider({ children }) {
   const showToast = useCallback((message, type = 'info') => {
     const id = Date.now() + Math.random();
     setToasts((prev) => [...prev, { id, message, type }]);
+
+    if (type === 'success') {
+      sound.playPass();
+    } else if (type === 'error') {
+      sound.playFail();
+    } else {
+      sound.playNotification();
+    }
 
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));

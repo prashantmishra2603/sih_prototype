@@ -1,23 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, FileText, CheckCircle2, XCircle, AlertCircle, Download, ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
+import { ArrowLeft, FileText, CheckCircle2, XCircle, AlertCircle, Download, ThumbsUp, ThumbsDown, MessageSquare, Maximize2 } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { ScoreRing } from '../../components/ScoreRing';
 import { ComplianceBadge, RiskBadge, RecommendationBadge } from '../../components/Badges';
 import { RequirementCard } from '../../components/RequirementCard';
 import { getBid, updateDecision } from '../../api/client';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } from 'recharts';
+import { ChartModal } from '../../components/ChartModal';
+import { sound } from '../../utils/soundEffects';
+import { useToast } from '../../components/Toast';
+import { downloadExecutiveReport } from '../../utils/exportReport';
 
 export default function BidAnalysis() {
   const { bidId } = useParams();
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [bid, setBid] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [decisionNote, setDecisionNote] = useState('');
   const [deciding, setDeciding] = useState(false);
   const [decided, setDecided] = useState(false);
+  const [showChartModal, setShowChartModal] = useState(false);
 
   useEffect(() => {
     getBid(bidId).then(data => { setBid(data); setLoading(false); }).catch(() => setLoading(false));
@@ -29,6 +36,9 @@ export default function BidAnalysis() {
       await updateDecision(bidId, decision, decisionNote);
       setDecided(true);
       setBid(prev => ({ ...prev, officer_decision: decision }));
+      if (decision === 'ACCEPTED') sound.playPass();
+      else if (decision === 'REJECTED') sound.playFail();
+      else sound.playReview();
     } catch {}
     setDeciding(false);
   };
@@ -59,13 +69,23 @@ export default function BidAnalysis() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}>
-            <ArrowLeft size={14} /> Back
-          </button>
-          <div></div>
-          <button className="btn btn-secondary btn-sm"><Download size={14} /> Export Report</button>
-        </div>
+        <Topbar
+          title="Bid Compliance Analysis"
+          subtitle={bid?.contractor_name ? `${bid.contractor_name} — Evaluation Report` : 'Evaluation Report'}
+          showBack={true}
+          rightContent={
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => {
+                sound.playExport();
+                downloadExecutiveReport(`GeM Compliance Evaluation Report - ${bid?.contractor_name || `Bid ${bidId}`}`);
+                showToast('✓ Bid evaluation report downloaded successfully!', 'success');
+              }}
+            >
+              <Download size={14} /> Export Report
+            </button>
+          }
+        />
 
         <div className="page-content">
           {/* Bid Header */}
@@ -142,12 +162,26 @@ export default function BidAnalysis() {
               </div>
 
               <div className="card">
-                <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: 16 }}>Compliance Radar</div>
+                <div className="chart-card-header">
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '0.98rem' }}>Compliance Radar</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Score across evaluation domains</div>
+                  </div>
+                  <button
+                    className="chart-expand-btn"
+                    onClick={() => {
+                      sound.playTap();
+                      setShowChartModal(true);
+                    }}
+                  >
+                    <Maximize2 size={13} /> Full View
+                  </button>
+                </div>
                 <ResponsiveContainer width="100%" height={200}>
                   <RadarChart data={radarData}>
-                    <PolarGrid stroke="rgba(255,255,255,0.08)" />
+                    <PolarGrid stroke="rgba(255,255,255,0.1)" />
                     <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} />
-                    <Radar name="Score" dataKey="score" stroke="var(--blue)" fill="var(--blue)" fillOpacity={0.15} strokeWidth={2} />
+                    <Radar name="Score" dataKey="score" stroke="var(--blue)" fill="var(--blue)" fillOpacity={0.2} strokeWidth={2} />
                   </RadarChart>
                 </ResponsiveContainer>
 
@@ -237,6 +271,34 @@ export default function BidAnalysis() {
           )}
         </div>
       </div>
+
+      {/* Full View Chart Modal */}
+      <ChartModal
+        isOpen={showChartModal}
+        onClose={() => setShowChartModal(false)}
+        title="Compliance Evaluation Radar — Full View"
+        subtitle={`${bid?.contractor_name || 'Bidder'} domain score breakdown (0-100)`}
+      >
+        <div style={{ padding: '16px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <ResponsiveContainer width="100%" height={460}>
+            <RadarChart data={radarData}>
+              <PolarGrid stroke="rgba(255,255,255,0.15)" />
+              <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-primary)', fontSize: 13, fontWeight: 600 }} />
+              <Radar name="Score" dataKey="score" stroke="var(--blue)" fill="var(--blue)" fillOpacity={0.25} strokeWidth={3} />
+            </RadarChart>
+          </ResponsiveContainer>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, width: '100%', marginTop: 20 }}>
+            {radarData.map(r => (
+              <div key={r.subject} className="card" style={{ textAlign: 'center', padding: '14px' }}>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>{r.subject}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: r.score >= 80 ? 'var(--green-light)' : r.score >= 60 ? 'var(--amber)' : 'var(--red-light)' }}>
+                  {r.score}%
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ChartModal>
     </div>
   );
 }

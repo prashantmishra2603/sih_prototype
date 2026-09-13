@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { Topbar } from '../components/Topbar';
 import { Send, Trash2, Bot, User, Sparkles, BookOpen, ShieldCheck } from 'lucide-react';
+import { sound } from '../utils/soundEffects';
 
 const CHAT_KB = {
   'mandatory documents': `📋 **Mandatory Documents for GeM Bids:**\n\n1. **GST Certificate** — Valid GSTIN required\n2. **PAN Card** — Linked with Income Tax records\n3. **Udyam/MSME Registration** — If applicable\n4. **ISO Certifications** — Category-specific (9001, 27001, etc.)\n5. **BIS/IS Standards** — For goods with quality standards\n6. **ESI & EPF Registrations** — Labour compliance\n7. **Aadhaar-authenticated signatory** — GeM portal requirement\n8. **Experience certificates** — If PQ criteria mandates\n\nAdditionally, **Vendor Assessment** by RITES gives a compliance badge that boosts bid credibility.`,
@@ -49,12 +50,14 @@ export default function AIChat() {
     const text = textToSend || input;
     if (!text.trim()) return;
 
+    sound.playTap();
     const userMsg = { id: Date.now(), role: 'user', text };
     setMessages((prev) => [...prev, userMsg]);
     if (!textToSend) setInput('');
     setIsTyping(true);
 
     setTimeout(() => {
+      sound.playNotification();
       const responseText = getAIResponse(text);
       const aiMsg = { id: Date.now() + 1, role: 'ai', text: responseText };
       setMessages((prev) => [...prev, aiMsg]);
@@ -75,26 +78,19 @@ export default function AIChat() {
         <Topbar title="AI Compliance Assistant" subtitle="Domain-tuned AI for GeM procurement queries and GFR rules" />
 
         <div className="page-content">
-          <div className="section-header">
-            <div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>
-                AI Compliance <span className="gradient-text-green">Assistant</span>
-              </h2>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                Ask any GeM procurement, GFR, or bid compliance question
-              </p>
-            </div>
+          <div className="section-header" style={{ justifyContent: 'flex-end', marginBottom: 16 }}>
             <button
               className="btn btn-ghost btn-sm"
-              onClick={() =>
+              onClick={() => {
+                sound.playTap();
                 setMessages([
                   {
                     id: Date.now(),
                     role: 'ai',
                     text: 'Chat cleared. How can I assist with GeM compliance today?',
                   },
-                ])
-              }
+                ]);
+              }}
             >
               <Trash2 size={14} /> Clear Chat
             </button>

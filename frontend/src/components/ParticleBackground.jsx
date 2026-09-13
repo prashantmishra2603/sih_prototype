@@ -43,9 +43,12 @@ export function ParticleBackground() {
       }
 
       draw() {
+        const isCream = document.documentElement.getAttribute('data-theme') === 'cream';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16, 185, 129, ${this.alpha})`;
+        ctx.fillStyle = isCream
+          ? `rgba(30, 58, 138, ${this.alpha * 0.4})`
+          : `rgba(226, 138, 117, ${this.alpha})`;
         ctx.fill();
       }
     }
@@ -53,6 +56,7 @@ export function ParticleBackground() {
     const particles = Array.from({ length: 65 }, () => new Particle());
 
     const drawConnections = () => {
+      const isCream = document.documentElement.getAttribute('data-theme') === 'cream';
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -62,7 +66,9 @@ export function ParticleBackground() {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(16, 185, 129, ${0.07 * (1 - dist / 120)})`;
+            ctx.strokeStyle = isCream
+              ? `rgba(30, 58, 138, ${0.05 * (1 - dist / 120)})`
+              : `rgba(226, 138, 117, ${0.07 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }

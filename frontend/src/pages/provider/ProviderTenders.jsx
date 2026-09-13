@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { getTenders } from '../../api/client';
+import { sound } from '../../utils/soundEffects';
 
 export default function ProviderTenders() {
   const { user } = useAuth();
@@ -20,10 +22,15 @@ export default function ProviderTenders() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <div></div>
-          <button className="btn btn-primary btn-sm" onClick={() => navigate('/provider/create-tender')}>+ Create Tender</button>
-        </div>
+        <Topbar
+          title="Procurement Tenders"
+          subtitle="Manage all active procurement tenders"
+          rightContent={
+            <button className="btn btn-primary btn-sm" onClick={() => { sound.playTap(); navigate('/provider/create-tender'); }}>
+              <Plus size={14} /> Create Tender
+            </button>
+          }
+        />
         <div className="page-content">
           <div className="page-header">
             <div className="page-title">My Tenders</div>

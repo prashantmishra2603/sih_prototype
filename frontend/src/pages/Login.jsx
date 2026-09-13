@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Eye, EyeOff, ArrowLeft, Loader } from 'lucide-react';
+import { Shield, Eye, EyeOff, ArrowLeft, Loader, Sun, Moon } from 'lucide-react';
 import { login as apiLogin } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import { sound } from '../utils/soundEffects';
 
 export default function Login() {
   const [role, setRole] = useState('provider');
@@ -13,6 +15,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const DEMO_CREDS = {
@@ -21,6 +24,7 @@ export default function Login() {
   };
 
   const fillDemo = () => {
+    sound.playImport();
     const d = DEMO_CREDS[role];
     setEmail(d.email);
     setPassword(d.password);
@@ -29,13 +33,16 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    sound.playTap();
     setLoading(true);
     setError('');
     try {
       const user = await apiLogin(email, password);
+      sound.playPass();
       login(user);
       navigate(user.role === 'provider' ? '/provider/dashboard' : '/contractor/dashboard');
     } catch (err) {
+      sound.playFail();
       setError(err?.response?.data?.detail || 'Invalid credentials. Please try again.');
     } finally {
       setLoading(false);
@@ -44,6 +51,27 @@ export default function Login() {
 
   return (
     <div className="login-wrapper">
+      {/* Floating Theme Controls */}
+      <div style={{ position: 'absolute', top: 20, right: 24, zIndex: 10, display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button
+          className="theme-toggle-btn"
+          onClick={toggleTheme}
+          title={theme === 'cream' ? 'Switch to Dark Theme' : 'Switch to White Cream Theme'}
+          style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
+        >
+          {theme === 'cream' ? (
+            <>
+              <Moon size={14} />
+              <span>Dark Theme</span>
+            </>
+          ) : (
+            <>
+              <Sun size={14} />
+              <span>White Cream</span>
+            </>
+          )}
+        </button>
+      </div>
       {/* Background blobs */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', width: 500, height: 500, background: '#10b981', borderRadius: '50%', filter: 'blur(150px)', opacity: 0.12, top: -200, left: -100 }} />
@@ -116,7 +144,7 @@ export default function Login() {
               <div
                 key={r.key}
                 className={`role-card ${role === r.key ? 'selected' : ''}`}
-                onClick={() => { setRole(r.key); setEmail(''); setPassword(''); setError(''); }}
+                onClick={() => { sound.playTap(); setRole(r.key); setEmail(''); setPassword(''); setError(''); }}
               >
                 <div className="role-icon-large">{r.icon}</div>
                 <div className="role-name">{r.name}</div>

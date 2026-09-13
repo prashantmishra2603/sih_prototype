@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './components/Toast';
+import { ThemeProvider } from './context/ThemeContext';
 import ParticleBackground from './components/ParticleBackground';
 
 // Pages
@@ -74,12 +75,14 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <ToastProvider>
-        <AuthProvider>
-          <ParticleBackground />
-          <AppRoutes />
-        </AuthProvider>
-      </ToastProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <ParticleBackground />
+            <AppRoutes />
+          </AuthProvider>
+        </ToastProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

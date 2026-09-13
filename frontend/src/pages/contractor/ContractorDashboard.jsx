@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import { CheckCircle2, XCircle, AlertCircle, Search, ArrowRight, TrendingUp } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { ScoreRing } from '../../components/ScoreRing';
 import { RiskBadge, RecommendationBadge } from '../../components/Badges';
 import { getBids } from '../../api/client';
+import { sound } from '../../utils/soundEffects';
 
 export default function ContractorDashboard() {
   const { user } = useAuth();
@@ -26,22 +28,17 @@ export default function ContractorDashboard() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <div>
-            <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Welcome, {user?.name?.split(' ')[0]} 👋</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{user?.organization}</div>
-          </div>
-          <button className="btn btn-primary btn-sm" onClick={() => navigate('/contractor/browse')}>
-            <Search size={14} /> Browse Tenders
-          </button>
-        </div>
+        <Topbar
+          title="Contractor Portal"
+          subtitle={`Welcome, ${user?.name || 'Vendor'} — ${user?.organization || 'GeM Supplier'}`}
+          rightContent={
+            <button className="btn btn-primary btn-sm" onClick={() => { sound.playTap(); navigate('/contractor/browse'); }}>
+              <Search size={14} /> Browse Tenders
+            </button>
+          }
+        />
 
         <div className="page-content">
-          <div className="page-header">
-            <div className="page-title">My Bid Dashboard</div>
-            <div className="page-subtitle">Track your bid submissions and compliance readiness</div>
-          </div>
-
           {/* Stats */}
           <div className="grid-4 mb-6">
             {[

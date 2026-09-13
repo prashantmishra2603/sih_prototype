@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, PlusCircle, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { createTender } from '../../api/client';
 
 const SAMPLE_REQUIREMENTS = [
@@ -50,17 +51,12 @@ export default function CreateTender() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}>
-            <ArrowLeft size={14} /> Back
-          </button>
-          <div></div>
-        </div>
+        <Topbar
+          title="Create New Tender"
+          subtitle="AI-assisted requirement structuring and tender publishing"
+          showBack={true}
+        />
         <div className="page-content">
-          <div className="page-header">
-            <div className="page-title">Create New Tender</div>
-            <div className="page-subtitle">Fill in the tender details. AI will extract and structure requirements automatically.</div>
-          </div>
 
           <div className="grid-2">
             <div>

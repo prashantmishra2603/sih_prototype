@@ -45,9 +45,6 @@ export function Sidebar() {
             <div className="logo-sub">Compliance Platform</div>
           </div>
         </div>
-        <div className="sidebar-badge" style={{ marginTop: 8 }}>
-          🟢 System Operational
-        </div>
       </div>
 
       <nav className="sidebar-nav">
@@ -71,7 +68,7 @@ export function Sidebar() {
         <div className="nav-section-title">System</div>
         <div className="nav-item" onClick={handleLogout} style={{ cursor: 'pointer' }}>
           <LogOut size={16} />
-          Sign Out
+          <span style={{ flex: 1 }}>Sign Out</span>
         </div>
       </nav>
 

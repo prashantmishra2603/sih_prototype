@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, FileText, Users, BarChart3, GitCompare } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { ScoreRing } from '../../components/ScoreRing';
 import { RiskBadge, RecommendationBadge } from '../../components/Badges';
 import { getTender, getTenderBids } from '../../api/client';
+import { sound } from '../../utils/soundEffects';
 
 export default function TenderDetail() {
   const { tenderId } = useParams();
@@ -39,14 +41,16 @@ export default function TenderDetail() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}>
-            <ArrowLeft size={14} /> Back
-          </button>
-          <button className="btn btn-primary btn-sm" onClick={() => navigate(`/provider/compare/${tenderId}`)}>
-            <GitCompare size={14} /> Compare All Bidders
-          </button>
-        </div>
+        <Topbar
+          title="Tender Evaluation & Overview"
+          subtitle={tender?.title ? `${tender.gem_id} — ${tender.title}` : 'Tender Details'}
+          showBack={true}
+          rightContent={
+            <button className="btn btn-primary btn-sm" onClick={() => { sound.playTap(); navigate(`/provider/compare/${tenderId}`); }}>
+              <GitCompare size={14} /> Compare All Bidders
+            </button>
+          }
+        />
 
         <div className="page-content">
           {/* Tender Header */}

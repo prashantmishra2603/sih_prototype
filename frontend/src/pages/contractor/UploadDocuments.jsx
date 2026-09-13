@@ -3,11 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Upload, X, FileText, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { useAuth } from '../../context/AuthContext';
 import { getTender, preBidCheck, submitBid } from '../../api/client';
 import { ScoreRing } from '../../components/ScoreRing';
 import { ComplianceBadge, RiskBadge, RecommendationBadge } from '../../components/Badges';
 import { RequirementCard } from '../../components/RequirementCard';
+import { sound } from '../../utils/soundEffects';
 
 const SUGGESTED_DOCS = [
   'Turnover_Certificate_FY2025.pdf',
@@ -37,30 +39,44 @@ export default function UploadDocuments() {
   }, [tenderId]);
 
   const addDoc = (docName) => {
+    sound.playImport();
     if (!docs.includes(docName)) setDocs(d => [...d, docName]);
   };
-  const removeDoc = (docName) => setDocs(d => d.filter(x => x !== docName));
+  const removeDoc = (docName) => {
+    sound.playTap();
+    setDocs(d => d.filter(x => x !== docName));
+  };
 
   const handlePreCheck = async () => {
     if (docs.length === 0) { alert('Please add at least one document.'); return; }
+    sound.playTap();
     setChecking(true);
     setAnalysis(null);
     try {
       const result = await preBidCheck(tenderId, docs);
       setAnalysis(result.analysis);
+      const score = result?.analysis?.overall_score || 0;
+      if (score >= 80) sound.playPass();
+      else if (score >= 60) sound.playReview();
+      else sound.playFail();
     } catch (err) {
+      sound.playFail();
       alert('Pre-check failed: ' + (err?.response?.data?.detail || err.message));
     }
     setChecking(false);
   };
 
   const handleSubmit = async () => {
+    sound.playTap();
     setSubmitting(true);
     try {
       await submitBid({ tender_id: tenderId, documents: docs }, user.id, user.organization);
+      sound.playPass();
       setSubmitted(true);
       setTimeout(() => navigate('/contractor/bids'), 2000);
-    } catch {}
+    } catch {
+      sound.playFail();
+    }
     setSubmitting(false);
   };
 
@@ -71,10 +87,11 @@ export default function UploadDocuments() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}><ArrowLeft size={14} /> Back</button>
-          <div></div>
-        </div>
+        <Topbar
+          title="Bid Document Submission"
+          subtitle={tender?.title ? `Pre-bid compliance check for ${tender.title}` : 'Upload documents and verify compliance'}
+          showBack={true}
+        />
 
         <div className="page-content">
           {/* Tender info */}

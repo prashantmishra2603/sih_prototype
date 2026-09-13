@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import { ClipboardCheck, ArrowRight, Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { ScoreRing } from '../../components/ScoreRing';
 import { RiskBadge, RecommendationBadge } from '../../components/Badges';
 import { getBids } from '../../api/client';
+import { sound } from '../../utils/soundEffects';
 
 export default function MyBids() {
   const { user } = useAuth();
@@ -35,19 +37,17 @@ export default function MyBids() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <div></div>
-          <button className="btn btn-primary btn-sm" onClick={() => navigate('/contractor/browse')}>
-            <Search size={14} /> Browse More Tenders
-          </button>
-        </div>
+        <Topbar
+          title="My Submitted Bids"
+          subtitle="Track evaluation status, compliance scores, and decisions"
+          rightContent={
+            <button className="btn btn-primary btn-sm" onClick={() => { sound.playTap(); navigate('/contractor/browse'); }}>
+              <Search size={14} /> Browse More Tenders
+            </button>
+          }
+        />
 
         <div className="page-content">
-          <div className="page-header">
-            <div className="page-title">My Bid Submissions</div>
-            <div className="page-subtitle">Track all your bids and their compliance status</div>
-          </div>
-
           {/* Stats */}
           <div className="grid-4 mb-6">
             {[

@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, FileText, CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, FileText, CheckCircle2, AlertCircle, XCircle, Maximize2 } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
+import { Topbar } from '../../components/Topbar';
 import { ScoreRing } from '../../components/ScoreRing';
 import { RiskBadge, RecommendationBadge } from '../../components/Badges';
 import { RequirementCard } from '../../components/RequirementCard';
 import { getBid } from '../../api/client';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer } from 'recharts';
+import { ChartModal } from '../../components/ChartModal';
+import { sound } from '../../utils/soundEffects';
 
 export default function ContractorBidDetail() {
   const { bidId } = useParams();
@@ -15,6 +18,7 @@ export default function ContractorBidDetail() {
   const [bid, setBid] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('ALL');
+  const [showChartModal, setShowChartModal] = useState(false);
 
   useEffect(() => {
     getBid(bidId).then(data => { setBid(data); setLoading(false); }).catch(() => setLoading(false));
@@ -58,12 +62,11 @@ export default function ContractorBidDetail() {
     <div className="app-layout">
       <Sidebar />
       <div className="main-content">
-        <div className="topbar">
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}>
-            <ArrowLeft size={14} /> Back
-          </button>
-          <div></div>
-        </div>
+        <Topbar
+          title="Bid Details & Readiness"
+          subtitle={bid?.tender_title || 'Tender Compliance'}
+          showBack={true}
+        />
 
         <div className="page-content">
           {/* Bid Header */}
@@ -171,7 +174,21 @@ export default function ContractorBidDetail() {
               </div>
 
               <div className="card">
-                <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: 16 }}>Compliance Radar</div>
+                <div className="chart-card-header">
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Compliance Radar</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Score across evaluation domains</div>
+                  </div>
+                  <button
+                    className="chart-expand-btn"
+                    onClick={() => {
+                      sound.playTap();
+                      setShowChartModal(true);
+                    }}
+                  >
+                    <Maximize2 size={13} /> Full View
+                  </button>
+                </div>
                 <ResponsiveContainer width="100%" height={200}>
                   <RadarChart data={radarData}>
                     <PolarGrid stroke="rgba(255,255,255,0.08)" />
@@ -241,6 +258,34 @@ export default function ContractorBidDetail() {
           )}
         </div>
       </div>
+
+      {/* Full View Chart Modal */}
+      <ChartModal
+        isOpen={showChartModal}
+        onClose={() => setShowChartModal(false)}
+        title="Compliance Evaluation Radar — Full View"
+        subtitle="Bidder readiness across key compliance domains"
+      >
+        <div style={{ padding: '16px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <ResponsiveContainer width="100%" height={460}>
+            <RadarChart data={radarData}>
+              <PolarGrid stroke="rgba(255,255,255,0.15)" />
+              <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-primary)', fontSize: 13, fontWeight: 600 }} />
+              <Radar name="Score" dataKey="score" stroke="var(--green)" fill="var(--green)" fillOpacity={0.25} strokeWidth={3} />
+            </RadarChart>
+          </ResponsiveContainer>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, width: '100%', marginTop: 20 }}>
+            {radarData.map(r => (
+              <div key={r.subject} className="card" style={{ textAlign: 'center', padding: '14px' }}>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>{r.subject}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: r.score >= 80 ? 'var(--green-light)' : r.score >= 60 ? 'var(--amber)' : 'var(--red-light)' }}>
+                  {r.score}%
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ChartModal>
     </div>
   );
 }
