@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { sound } from '../utils/soundEffects';
 import {
   LayoutDashboard, FileText, PlusCircle, Search, ClipboardCheck,
   ShieldCheck, LogOut, Bot, BarChart3, Settings, CheckCircle2, Award
@@ -37,7 +38,15 @@ export function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo">
+      <div
+        className="sidebar-logo"
+        onClick={() => {
+          sound.playTap();
+          navigate('/');
+        }}
+        style={{ cursor: 'pointer' }}
+        title="Go to Home / Landing Page"
+      >
         <div className="logo-badge">
           <div className="logo-icon">🛡️</div>
           <div>
