@@ -28,11 +28,11 @@ export function ChartModal({ isOpen, onClose, title = 'Chart Full View', subtitl
                 width: 32,
                 height: 32,
                 borderRadius: 'var(--radius-sm)',
-                background: 'rgba(226, 138, 117, 0.15)',
+                background: 'rgba(30, 58, 138, 0.12)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--green)'
+                color: 'var(--blue)'
               }}
             >
               <Maximize2 size={16} />

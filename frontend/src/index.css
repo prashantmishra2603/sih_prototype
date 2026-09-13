@@ -16,9 +16,9 @@
   --cyan: #809E86;
   --cyan-light: #67e8f9;
   --purple: #8b5cf6;
-  --green: #E28A75;
-  --green-light: #eba494;
-  --green-glow: #E28A75;
+  --green: #10b981;
+  --green-light: #34d399;
+  --green-glow: #10b981;
   --amber: #f59e0b;
   --red: #ef4444;
   --red-light: #f87171;
@@ -336,218 +336,7 @@
   color: #1e3a8a !important;
 }
 
-/* ─── Official Gov Top Bar ────────────────────────── */
-.gov-top-bar {
-  background: rgba(15, 23, 42, 0.96);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 6px 32px;
-  font-size: 0.72rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  z-index: 50;
-  color: #94a3b8;
-}
-[data-theme="cream"] .gov-top-bar {
-  background: #f0e9d6 !important;
-  border-bottom: 1px solid #e0d5a8 !important;
-  color: #1e3a8a !important;
-}
 
-/* ─── Mockup Browser Chrome ──────────────────────── */
-.mockup-browser-window {
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(16, 185, 129, 0.2);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  background: #0f172a;
-}
-[data-theme="cream"] .mockup-browser-window {
-  background: #fffdf5 !important;
-  border: 1.5px solid #e5dcb8 !important;
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12), 0 0 25px rgba(30, 58, 138, 0.08) !important;
-}
-
-.mockup-browser-chrome {
-  background: rgba(15, 23, 42, 0.95);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 10px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-[data-theme="cream"] .mockup-browser-chrome {
-  background: #f4eee0 !important;
-  border-bottom: 1px solid #e5dcb8 !important;
-}
-
-.mockup-browser-dots {
-  display: flex;
-  gap: 6px;
-}
-.mockup-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-.mockup-browser-url {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 4px 14px;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 420px;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-[data-theme="cream"] .mockup-browser-url {
-  background: #fffdf5 !important;
-  border-color: #e5dcb8 !important;
-  color: #1e3a8a !important;
-}
-
-/* ─── Floating Hero Visual Badges ────────────────── */
-.floating-hero-pill {
-  position: absolute;
-  z-index: 10;
-  backdrop-filter: blur(16px);
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 9px 15px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  animation: floatSlow 4s ease-in-out infinite alternate;
-}
-[data-theme="cream"] .floating-hero-pill {
-  background: rgba(255, 253, 245, 0.95) !important;
-  border: 1.5px solid #e5dcb8 !important;
-  box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1) !important;
-  color: #0f172a !important;
-}
-
-@keyframes floatSlow {
-  0% { transform: translateY(0px); }
-  100% { transform: translateY(-8px); }
-}
-
-/* ─── Architecture Pipeline Cards ────────────────── */
-.pipeline-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-top: 36px;
-  position: relative;
-}
-@media (max-width: 1024px) {
-  .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 640px) {
-  .pipeline-grid { grid-template-columns: 1fr; }
-}
-
-.pipeline-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
-  min-height: 220px;
-}
-.pipeline-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
-  border-color: var(--border-active);
-}
-[data-theme="cream"] .pipeline-card {
-  background: #fffdf5 !important;
-  border: 1.5px solid #e5dcb8 !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
-}
-[data-theme="cream"] .pipeline-card:hover {
-  border-color: #1e3a8a !important;
-  box-shadow: 0 12px 32px rgba(30, 58, 138, 0.12) !important;
-}
-
-.pipeline-step-badge {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 900;
-  opacity: 0.25;
-  color: var(--text-muted);
-  position: absolute;
-  top: 14px;
-  right: 18px;
-}
-[data-theme="cream"] .pipeline-step-badge {
-  color: #1e3a8a !important;
-  opacity: 0.35 !important;
-}
-
-/* ─── Trust Framework Badges Grid ────────────────── */
-.trust-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-}
-@media (max-width: 1024px) {
-  .trust-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 640px) {
-  .trust-grid { grid-template-columns: 1fr; }
-}
-
-.trust-badge-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-.trust-badge-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--green-light);
-}
-[data-theme="cream"] .trust-badge-card {
-  background: #fffdf5 !important;
-  border: 1.5px solid #e5dcb8 !important;
-}
-[data-theme="cream"] .trust-badge-card:hover {
-  border-color: #1e3a8a !important;
-}
-
-/* ─── Login Sentinel Card ────────────────────────── */
-.login-sentinel-card {
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  border-radius: 14px;
-  padding: 16px;
-  margin-top: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-[data-theme="cream"] .login-sentinel-card {
-  background: #fffdf5 !important;
-  border: 1.5px solid #e5dcb8 !important;
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05) !important;
-}
 
 /* ─── Light White-Yellow Theming for AIChat ───────── */
 [data-theme="cream"] .chat-container {
@@ -1837,8 +1626,8 @@ tbody tr:last-child td { border-bottom: none; }
 @media (max-width: 1024px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .stat-grid { grid-template-columns: 1fr; } }
 
-.stat-card.blue::before { background: linear-gradient(90deg, #809E86, #809E86); }
-.stat-card.green::before { background: linear-gradient(90deg, #E28A75, #E28A75); }
+.stat-card.blue::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.stat-card.green::before { background: linear-gradient(90deg, #10b981, #34d399); }
 .stat-card.warn::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
 .stat-card.red::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
 
@@ -1905,7 +1694,45 @@ tbody tr:last-child td { border-bottom: none; }
   box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05) !important;
 }
 
-[data-theme="cream"] .stat-card-executive:hover {
+/* Eliminate orange top border & colored pseudo-elements on all cards in cream theme */
+[data-theme="cream"] .stat-card-executive::before,
+[data-theme="cream"] .stat-card::before,
+[data-theme="cream"] .stat-card-executive.card-warn::before,
+[data-theme="cream"] .stat-card-executive.card-blue::before,
+[data-theme="cream"] .stat-card-executive.card-green::before,
+[data-theme="cream"] .stat-card-executive.card-purple::before,
+[data-theme="cream"] .stat-card-executive.card-red::before,
+[data-theme="cream"] .stat-card.warn::before,
+[data-theme="cream"] .stat-card.blue::before,
+[data-theme="cream"] .stat-card.green::before,
+[data-theme="cream"] .stat-card.red::before {
+  display: none !important;
+  content: none !important;
+  height: 0 !important;
+  background: none !important;
+  border: none !important;
+}
+
+[data-theme="cream"] .doc-card,
+[data-theme="cream"] .doc-card.valid,
+[data-theme="cream"] .doc-card.warning,
+[data-theme="cream"] .doc-card.invalid,
+[data-theme="cream"] .doc-card.pending {
+  border: 1px solid #e5dcb8 !important;
+  border-top: 1px solid #e5dcb8 !important;
+}
+
+[data-theme="cream"] .score-ring-card {
+  background: #fffdf5 !important;
+  border: 1.5px solid #e5dcb8 !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="cream"] .stat-card-executive:hover,
+[data-theme="cream"] .stat-card:hover,
+[data-theme="cream"] .score-ring-card:hover,
+[data-theme="cream"] .doc-card:hover {
   border-color: #1e3a8a !important;
   box-shadow: 0 14px 36px rgba(30, 58, 138, 0.12) !important;
 }
