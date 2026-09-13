@@ -1,7 +1,7 @@
 import { Sidebar } from '../../components/Sidebar';
 import { Topbar } from '../../components/Topbar';
 import { useToast } from '../../components/Toast';
-import { Download, ShieldCheck, BarChart3, TrendingUp, AlertTriangle, CheckCircle2, Lock } from 'lucide-react';
+import { Download, ShieldCheck, BarChart3, TrendingUp, AlertTriangle, CheckCircle2, Lock, FileText } from 'lucide-react';
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend,
   PieChart, Pie, Cell, BarChart, Bar
@@ -100,7 +100,7 @@ export default function AnalyticsAudit() {
             <div className="stat-card blue">
               <div className="stat-icon blue">📊</div>
               <div className="stat-value">142</div>
-              <div class="stat-label">Total Bids Analyzed</div>
+              <div className="stat-label">Total Bids Analyzed</div>
               <div className="stat-delta up">↑ FY 2026-27</div>
             </div>
             <div className="stat-card green">
