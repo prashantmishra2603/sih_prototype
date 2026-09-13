@@ -54,7 +54,7 @@ export default function CreateTender() {
           <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}>
             <ArrowLeft size={14} /> Back
           </button>
-          <div style={{ fontWeight: 700 }}>Create New Tender</div>
+          <div></div>
         </div>
         <div className="page-content">
           <div className="page-header">

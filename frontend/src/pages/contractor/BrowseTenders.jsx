@@ -30,7 +30,7 @@ export default function BrowseTenders() {
       <Sidebar />
       <div className="main-content">
         <div className="topbar">
-          <div style={{ fontWeight: 700 }}>Browse Tenders</div>
+          <div></div>
         </div>
         <div className="page-content">
           <div className="page-header">

@@ -63,7 +63,7 @@ export default function BidAnalysis() {
           <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}>
             <ArrowLeft size={14} /> Back
           </button>
-          <div style={{ fontWeight: 700 }}>Bid Compliance Analysis</div>
+          <div></div>
           <button className="btn btn-secondary btn-sm"><Download size={14} /> Export Report</button>
         </div>
 

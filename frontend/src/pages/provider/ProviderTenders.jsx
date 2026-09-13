@@ -21,7 +21,7 @@ export default function ProviderTenders() {
       <Sidebar />
       <div className="main-content">
         <div className="topbar">
-          <div style={{ fontWeight: 700 }}>My Tenders</div>
+          <div></div>
           <button className="btn btn-primary btn-sm" onClick={() => navigate('/provider/create-tender')}>+ Create Tender</button>
         </div>
         <div className="page-content">

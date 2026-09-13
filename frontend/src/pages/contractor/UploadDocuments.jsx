@@ -73,7 +73,7 @@ export default function UploadDocuments() {
       <div className="main-content">
         <div className="topbar">
           <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}><ArrowLeft size={14} /> Back</button>
-          <div style={{ fontWeight: 700 }}>Upload Documents & Pre-Bid Check</div>
+          <div></div>
         </div>
 
         <div className="page-content">

@@ -17,8 +17,6 @@ export function Topbar({ title = 'Dashboard', subtitle = 'GeM Procurement Compli
   return (
     <div id="topbar" className="topbar">
       <div className="topbar-title">
-        <h1 id="page-title">{title}</h1>
-        <p id="page-subtitle">{subtitle}</p>
       </div>
 
       <div className="topbar-actions-center">

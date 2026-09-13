@@ -36,7 +36,7 @@ export default function MyBids() {
       <Sidebar />
       <div className="main-content">
         <div className="topbar">
-          <div style={{ fontWeight: 700 }}>My Bids</div>
+          <div></div>
           <button className="btn btn-primary btn-sm" onClick={() => navigate('/contractor/browse')}>
             <Search size={14} /> Browse More Tenders
           </button>

@@ -62,7 +62,7 @@ export default function ContractorBidDetail() {
           <button className="btn btn-ghost btn-sm" onClick={() => navigate(-1)}>
             <ArrowLeft size={14} /> Back
           </button>
-          <div style={{ fontWeight: 700 }}>Bid Detail & Analysis</div>
+          <div></div>
         </div>
 
         <div className="page-content">
