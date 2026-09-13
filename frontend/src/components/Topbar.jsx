@@ -15,19 +15,22 @@ export function Topbar({ title = 'Dashboard', subtitle = 'GeM Procurement Compli
   };
 
   return (
-    <div id="topbar">
+    <div id="topbar" className="topbar">
       <div className="topbar-title">
         <h1 id="page-title">{title}</h1>
         <p id="page-subtitle">{subtitle}</p>
       </div>
 
-      <div className="topbar-actions">
+      <div className="topbar-actions-center">
         <button className="topbar-btn" onClick={syncGem}>
           <RefreshCw size={14} /> Sync GeM
         </button>
         <button className="topbar-btn primary" onClick={() => navigate('/provider/create-tender')}>
           <Zap size={14} /> New Scan
         </button>
+      </div>
+
+      <div className="topbar-actions-right">
         <NotificationPanel />
       </div>
     </div>

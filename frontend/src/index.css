@@ -555,17 +555,33 @@ tbody tr:last-child td { border-bottom: none; }
 
 /* ─── Topbar ────────────────────────────────────── */
 .topbar {
-  background: rgba(30, 41, 59, 0.85);
+  background: #ffffff;
   border-bottom: 1px solid var(--border);
   padding: 0 32px;
-  height: 60px;
-  display: flex;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  
   position: sticky;
   top: 0;
   z-index: 10;
+}
+.topbar-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.topbar-actions-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.topbar-actions-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
 /* ─── Alert Boxes ───────────────────────────────── */
@@ -945,11 +961,7 @@ tbody tr:last-child td { border-bottom: none; }
 .nav-badge.info { background: var(--blue); }
 
 /* ─── Topbar Actions ────────────────────────────── */
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+
 .topbar-title h1 {
   font-size: 1.15rem;
   font-weight: 700;
