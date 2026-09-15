@@ -1,14 +1,18 @@
 import json
+import logging
 import uuid
-from datetime import date
+from datetime import date, datetime
 from fastapi import APIRouter, HTTPException
 from models.schemas import BidSubmit, PreBidCheckRequest
 from services.ai_analysis import generate_prebid_analysis
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/bids", tags=["bids"])
 
 BIDS_PATH = "data/bids.json"
 TENDERS_PATH = "data/tenders.json"
+NOTIFICATIONS_PATH = "data/notifications.json"
 
 
 def load_bids():
@@ -24,6 +28,64 @@ def save_bids(data):
 def load_tenders():
     with open(TENDERS_PATH, "r") as f:
         return json.load(f)
+
+
+def load_notifications():
+    try:
+        with open(NOTIFICATIONS_PATH, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+
+def save_notifications(data):
+    with open(NOTIFICATIONS_PATH, "w") as f:
+        json.dump(data, f, indent=2)
+
+
+def create_high_risk_notification(tender: dict, bid: dict, analysis: dict):
+    try:
+        provider_id = tender.get("provider_id")
+        if not provider_id:
+            return
+
+        notifications = load_notifications()
+        bid_id = bid.get("id")
+
+        # Duplicate protection
+        for n in notifications:
+            if (
+                n.get("user_id") == provider_id
+                and n.get("bid_id") == bid_id
+                and n.get("severity") == "HIGH"
+            ):
+                return
+
+        critical_issues = analysis.get("critical_issues") or []
+        reason = (
+            critical_issues[0]
+            if critical_issues
+            else f"Bid compliance score ({analysis.get('overall_score', 0)}%) indicates high risk factors."
+        )
+
+        tender_id = tender.get("id", bid.get("tender_id"))
+        new_notification = {
+            "id": f"notif_{uuid.uuid4().hex[:6]}",
+            "user_id": provider_id,
+            "tender_id": tender_id,
+            "bid_id": bid_id,
+            "type": "critical",
+            "severity": "HIGH",
+            "title": "High Risk Bid Detected",
+            "message": f"Bid {bid_id} for Tender {tender_id} has been classified as HIGH risk.",
+            "reason": reason,
+            "read": False,
+            "created_at": datetime.now().isoformat()
+        }
+        notifications.append(new_notification)
+        save_notifications(notifications)
+    except Exception as e:
+        logger.error(f"Failed to create high risk notification: {e}")
 
 
 @router.get("/")
@@ -83,6 +145,11 @@ def submit_bid(bid: BidSubmit, contractor_id: str, contractor_name: str):
     }
     bids.append(new_bid)
     save_bids(bids)
+
+    # Risk trigger: create persistent notification for tender provider if bid is HIGH risk
+    if analysis and analysis.get("risk_level") == "HIGH":
+        create_high_risk_notification(tender, new_bid, analysis)
+
     return new_bid
 
 

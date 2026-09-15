@@ -1,24 +1,78 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, CheckCheck, AlertCircle, AlertTriangle, CheckCircle2, Megaphone } from 'lucide-react';
+import { Bell, CheckCheck } from 'lucide-react';
 import { useToast } from './Toast';
+import { useAuth } from '../context/AuthContext';
+import { getNotifications, markNotificationRead, markAllNotificationsRead } from '../api/client';
 
-const INITIAL_NOTIFS = [
-  { id: 1, icon: '🚨', title: 'Missing GST Certificate', body: 'Sigma Electronics — GEM/2026/B/4521. Deadline in 6 hours.', time: '2m ago', unread: true, type: 'critical' },
-  { id: 2, icon: '⚠️', title: 'ISO 9001 Expiring Soon', body: 'TechCraft Solutions — Certificate expires in 14 days.', time: '15m ago', unread: true, type: 'warning' },
-  { id: 3, icon: '⏰', title: '48-Hour Window Closing', body: 'GEM/2026/B/4498 representation period ends in 32 hours.', time: '1h ago', unread: true, type: 'warning' },
-  { id: 4, icon: '✅', title: 'AI Scan Completed', body: '8 bids processed — 6 compliant, 2 flagged.', time: '2h ago', unread: false, type: 'info' },
-  { id: 5, icon: '📢', title: 'Policy Update: GFR Amendment 2026', body: 'Rule 149 amendment effective Oct 1, 2026.', time: '5h ago', unread: false, type: 'info' },
-];
+function formatTimeAgo(isoString) {
+  if (!isoString) return '';
+  try {
+    const date = new Date(isoString);
+    const now = new Date();
+    const diffSec = Math.floor((now - date) / 1000);
+    if (diffSec < 60) return 'Just now';
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+    const diffHour = Math.floor(diffMin / 60);
+    if (diffHour < 24) return `${diffHour}h ago`;
+    const diffDay = Math.floor(diffHour / 24);
+    return `${diffDay}d ago`;
+  } catch {
+    return isoString;
+  }
+}
+
+function isAppAlertsEnabled() {
+  if (typeof window !== 'undefined' && typeof window.appAlerts === 'boolean') {
+    return window.appAlerts;
+  }
+  try {
+    const direct = localStorage.getItem('appAlerts');
+    if (direct !== null) {
+      return direct === 'true' || direct === '1';
+    }
+    const storedSettings = localStorage.getItem('bidcheck_settings') || localStorage.getItem('settings');
+    if (storedSettings) {
+      const parsed = JSON.parse(storedSettings);
+      if (parsed && typeof parsed.appAlerts === 'boolean') {
+        return parsed.appAlerts;
+      }
+    }
+  } catch {}
+  return true;
+}
+
+function mapNotification(n) {
+  const isCritical = n.severity === 'HIGH' || n.type === 'critical';
+  const isWarning = n.severity === 'MEDIUM' || n.type === 'warning';
+  return {
+    id: n.id,
+    user_id: n.user_id,
+    tender_id: n.tender_id,
+    bid_id: n.bid_id,
+    icon: isCritical ? '🚨' : (isWarning ? '⚠️' : 'ℹ️'),
+    title: n.title,
+    body: n.message || n.reason || '',
+    time: formatTimeAgo(n.created_at),
+    read: Boolean(n.read),
+    unread: !n.read,
+    type: n.type || (isCritical ? 'critical' : 'info'),
+    severity: n.severity,
+    created_at: n.created_at,
+  };
+}
 
 export function NotificationPanel() {
   const [open, setOpen] = useState(false);
-  const [notifs, setNotifs] = useState(INITIAL_NOTIFS);
+  const [notifs, setNotifs] = useState([]);
   const panelRef = useRef(null);
+  const knownIdsRef = useRef(null);
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { user } = useAuth();
 
-  const unreadCount = notifs.filter((n) => n.unread).length;
+  const unreadCount = notifs.filter((n) => !n.read).length;
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -30,13 +84,94 @@ export function NotificationPanel() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const markAllRead = () => {
-    setNotifs((prev) => prev.map((n) => ({ ...n, unread: false })));
-    showToast('All notifications marked as read', 'success');
+  useEffect(() => {
+    if (!user?.id) {
+      setNotifs([]);
+      knownIdsRef.current = null;
+      return;
+    }
+
+    let isMounted = true;
+
+    const fetchNotifs = async () => {
+      try {
+        const data = await getNotifications(user.id);
+        if (!isMounted || !Array.isArray(data)) return;
+
+        setNotifs(data.map(mapNotification));
+
+        if (knownIdsRef.current === null) {
+          // Initial fetch: record existing notification IDs as known; do not toast historical items
+          knownIdsRef.current = new Set(data.map((n) => n.id));
+        } else {
+          // Subsequent polling fetch: detect genuinely new notifications
+          const newNotifs = data.filter((n) => !knownIdsRef.current.has(n.id));
+
+          // Record new IDs immediately to prevent duplicate alerts
+          for (const n of newNotifs) {
+            knownIdsRef.current.add(n.id);
+          }
+
+          if (isAppAlertsEnabled() && newNotifs.length > 0) {
+            for (const n of newNotifs) {
+              const toastType =
+                n.severity === 'HIGH' || n.type === 'critical'
+                  ? 'error'
+                  : n.severity === 'MEDIUM' || n.type === 'warning'
+                  ? 'warning'
+                  : 'info';
+
+              const toastContent = (
+                <span style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <strong style={{ fontWeight: 600 }}>{n.title}</strong>
+                  <span style={{ fontSize: '0.78rem' }}>
+                    {n.message || `Bid ${n.bid_id} for Tender ${n.tender_id}`}
+                  </span>
+                  {n.reason && (
+                    <span style={{ fontSize: '0.74rem', opacity: 0.85 }}>
+                      {n.reason}
+                    </span>
+                  )}
+                </span>
+              );
+
+              showToast(toastContent, toastType);
+            }
+          }
+        }
+      } catch (err) {
+        // API/polling failure: keep current notifications, do not replace with fake data
+      }
+    };
+
+    fetchNotifs();
+    const interval = setInterval(fetchNotifs, 5000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [user?.id, showToast]);
+
+  const markAllRead = async () => {
+    if (!user?.id) return;
+    try {
+      await markAllNotificationsRead(user.id);
+      setNotifs((prev) => prev.map((n) => ({ ...n, read: true, unread: false })));
+      showToast('All notifications marked as read', 'success');
+    } catch (err) {
+      console.error('Failed to mark all notifications read:', err);
+    }
   };
 
-  const markRead = (id) => {
-    setNotifs((prev) => prev.map((n) => (n.id === id ? { ...n, unread: false } : n)));
+  const markRead = async (id) => {
+    if (!user?.id) return;
+    try {
+      await markNotificationRead(id, user.id);
+      setNotifs((prev) => prev.map((n) => (n.id === id ? { ...n, read: true, unread: false } : n)));
+    } catch (err) {
+      console.error('Failed to mark notification read:', err);
+    }
   };
 
   return (
@@ -63,21 +198,27 @@ export function NotificationPanel() {
           </div>
 
           <div id="notif-list" style={{ maxHeight: 340, overflowY: 'auto' }}>
-            {notifs.map((n) => (
-              <div
-                key={n.id}
-                className={`notif-item ${n.unread ? 'unread' : ''}`}
-                onClick={() => markRead(n.id)}
-              >
-                <div className="notif-icon">{n.icon}</div>
-                <div className="notif-body" style={{ flex: 1 }}>
-                  <h4>{n.title}</h4>
-                  <p>{n.body}</p>
-                  <div className="notif-time">{n.time}</div>
-                </div>
-                {n.unread && <div className="notif-unread-dot" />}
+            {notifs.length === 0 ? (
+              <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                No notifications
               </div>
-            ))}
+            ) : (
+              notifs.map((n) => (
+                <div
+                  key={n.id}
+                  className={`notif-item ${n.unread ? 'unread' : ''}`}
+                  onClick={() => markRead(n.id)}
+                >
+                  <div className="notif-icon">{n.icon}</div>
+                  <div className="notif-body" style={{ flex: 1 }}>
+                    <h4>{n.title}</h4>
+                    <p>{n.body}</p>
+                    <div className="notif-time">{n.time}</div>
+                  </div>
+                  {n.unread && <div className="notif-unread-dot" />}
+                </div>
+              ))
+            )}
           </div>
 
           <div className="notif-panel-footer">

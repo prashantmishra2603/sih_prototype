@@ -169,5 +169,18 @@ export const updateDecision = (bid_id, decision, note = '') =>
     .then(r => r.data)
     .catch(() => ({ message: `Decision '${decision}' recorded`, bid_id }));
 
+// Notifications
+export const getNotifications = (userId) =>
+  client.get('/notifications/', { params: { user_id: userId } })
+    .then(r => r.data);
+
+export const markNotificationRead = (notificationId, userId) =>
+  client.patch(`/notifications/${notificationId}/read`, null, { params: { user_id: userId } })
+    .then(r => r.data);
+
+export const markAllNotificationsRead = (userId) =>
+  client.patch('/notifications/read-all', null, { params: { user_id: userId } })
+    .then(r => r.data);
+
 export default client;
 

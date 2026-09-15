@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import auth, tenders, bids
+from routers import auth, tenders, bids, notifications
 
 app = FastAPI(
     title="BidCheck AI API",
@@ -22,6 +22,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(tenders.router)
 app.include_router(bids.router)
+app.include_router(notifications.router)
 
 
 @app.get("/")

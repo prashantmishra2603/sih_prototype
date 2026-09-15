@@ -96,3 +96,17 @@ class BidSubmit(BaseModel):
 class PreBidCheckRequest(BaseModel):
     tender_id: str
     documents: List[str]
+
+
+class NotificationResponse(BaseModel):
+    id: str
+    user_id: str
+    tender_id: str
+    bid_id: str
+    type: str          # "critical" | "warning" | "info"
+    severity: str      # "HIGH" | "MEDIUM" | "LOW"
+    title: str
+    message: str
+    reason: str
+    read: bool = False
+    created_at: str
