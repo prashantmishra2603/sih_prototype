@@ -68,7 +68,7 @@ export default function CreateTender() {
                       <label>Tender Title *</label>
                       <input name="title" value={form.title} onChange={handleChange} placeholder="e.g. IT Infrastructure Procurement 2026" required />
                     </div>
-                    <div className="grid-2" style={{ gap: 12 }}>
+                    <div className="grid-2 form-nested-grid" style={{ gap: 12 }}>
                       <div className="form-group">
                         <label>GeM ID *</label>
                         <input name="gem_id" value={form.gem_id} onChange={handleChange} placeholder="GEM/2026/B/XXXXXXX" required />
@@ -82,7 +82,7 @@ export default function CreateTender() {
                       <label>Department / Organization</label>
                       <input name="department" value={form.department} onChange={handleChange} placeholder="Department name" />
                     </div>
-                    <div className="grid-2" style={{ gap: 12 }}>
+                    <div className="grid-2 form-nested-grid" style={{ gap: 12 }}>
                       <div className="form-group">
                         <label>Tender Value *</label>
                         <input name="value" value={form.value} onChange={handleChange} placeholder="₹X Crore" required />

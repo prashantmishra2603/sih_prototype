@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Sun, Moon } from 'lucide-react';
+import { ArrowLeft, Sun, Moon, Menu } from 'lucide-react';
 import { NotificationPanel } from './NotificationPanel';
 import { useTheme } from '../context/ThemeContext';
 import { sound } from '../utils/soundEffects';
@@ -27,10 +27,25 @@ export function Topbar({
     }
   };
 
+  const handleToggleMenu = () => {
+    sound.playTap();
+    window.dispatchEvent(new CustomEvent('toggle-mobile-sidebar'));
+  };
+
   return (
     <header id="topbar" className="topbar">
-      {/* Left Slot: Back button or custom content or empty spacer */}
+      {/* Left Slot: Mobile Menu Toggle + Back button or custom content or empty spacer */}
       <div className="topbar-left">
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm mobile-menu-btn"
+          onClick={handleToggleMenu}
+          aria-label="Toggle navigation menu"
+          title="Toggle Navigation Menu"
+        >
+          <Menu size={18} />
+        </button>
+
         {showBack || backUrl || onBack ? (
           <button className="btn btn-ghost btn-sm" onClick={handleBack} style={{ gap: 6 }}>
             <ArrowLeft size={14} /> Back
@@ -38,7 +53,7 @@ export function Topbar({
         ) : leftContent ? (
           leftContent
         ) : (
-          <div style={{ width: 40 }} />
+          <div className="topbar-left-spacer" />
         )}
       </div>
 

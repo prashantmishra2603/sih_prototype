@@ -47,7 +47,7 @@ export default function Settings() {
         />
 
         <div className="page-content">
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 20 }}>
+          <div className="settings-save-row" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 20 }}>
             <button className="btn btn-primary btn-sm" onClick={handleSave}>
               <Save size={14} /> Save Changes
             </button>

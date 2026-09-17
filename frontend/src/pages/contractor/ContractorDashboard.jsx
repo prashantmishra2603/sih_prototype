@@ -101,6 +101,7 @@ export default function ContractorDashboard() {
                 {myBids.map((bid, i) => (
                   <motion.div
                     key={bid.id}
+                    className="contractor-bid-row"
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.07 }}
@@ -113,18 +114,20 @@ export default function ContractorDashboard() {
                     onClick={() => navigate(`/contractor/bid/${bid.id}`)}
                     whileHover={{ borderColor: 'rgba(99,179,237,0.25)' }}
                   >
-                    <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="contractor-bid-info" style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 600 }}>Bid #{bid.id.slice(-6)}</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Submitted {bid.submitted_at} • {bid.documents?.length} docs</div>
                     </div>
                     {bid.analysis && (
-                      <>
+                      <div className="contractor-bid-indicators" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <ScoreRing score={bid.analysis.overall_score} size={52} strokeWidth={5} />
-                        <RiskBadge risk={bid.analysis.risk_level} />
-                        <RecommendationBadge recommendation={bid.analysis.recommendation} />
-                      </>
+                        <div className="contractor-bid-badges" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <RiskBadge risk={bid.analysis.risk_level} />
+                          <RecommendationBadge recommendation={bid.analysis.recommendation} />
+                        </div>
+                      </div>
                     )}
-                    <ArrowRight size={14} color="var(--text-muted)" />
+                    <ArrowRight size={14} color="var(--text-muted)" className="contractor-bid-arrow" />
                   </motion.div>
                 ))}
               </div>

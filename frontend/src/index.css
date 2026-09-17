@@ -98,7 +98,7 @@
   font-size: 0.88rem !important;
 }
 
-[data-theme="cream"] .nav-item span {
+[data-theme="cream"] .nav-item span:not(.nav-badge) {
   color: #1e3a8a !important;
   font-weight: 700 !important;
 }
@@ -115,7 +115,7 @@
   border-color: rgba(30, 58, 138, 0.25) !important;
 }
 
-[data-theme="cream"] .nav-item:hover span {
+[data-theme="cream"] .nav-item:hover span:not(.nav-badge) {
   color: #0f172a !important;
   font-weight: 800 !important;
 }
@@ -132,7 +132,7 @@
   font-weight: 800 !important;
 }
 
-[data-theme="cream"] .nav-item.active span {
+[data-theme="cream"] .nav-item.active span:not(.nav-badge) {
   color: #0f172a !important;
   font-weight: 800 !important;
 }
@@ -742,18 +742,18 @@ select option {
 /* ─── Layout ────────────────────────────────────── */
 .app-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .main-content {
   flex: 1;
   min-width: 0;
+  height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  min-height: 100vh;
 }
 
 .page-content {
@@ -894,10 +894,14 @@ select option {
 /* ─── Table ─────────────────────────────────────── */
 .table-wrapper {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: var(--bg-card);
-  
+}
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 table {
   width: 100%;
@@ -935,21 +939,19 @@ tbody tr:last-child td { border-bottom: none; }
 /* ─── Sidebar ───────────────────────────────────── */
 .sidebar {
   width: 260px;
-  min-height: 100vh;
+  height: 100vh;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .sidebar-logo {
   padding: 24px 20px;
   border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
 .logo-badge {
@@ -984,6 +986,8 @@ tbody tr:last-child td { border-bottom: none; }
 
 .sidebar-nav {
   flex: 1;
+  overflow-y: auto;
+  min-height: 0;
   padding: 16px 12px;
 }
 
@@ -1027,6 +1031,7 @@ tbody tr:last-child td { border-bottom: none; }
 .sidebar-footer {
   padding: 16px 12px;
   border-top: 1px solid var(--border);
+  flex-shrink: 0;
 }
 .user-info {
   display: flex;
@@ -1330,6 +1335,19 @@ tbody tr:last-child td { border-bottom: none; }
   border-bottom: 1px solid var(--border);
 }
 
+.landing-scanner-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: center;
+}
+
+.landing-role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
 /* ─── Login page ────────────────────────────────── */
 .login-wrapper {
   min-height: 100vh;
@@ -1480,17 +1498,81 @@ tbody tr:last-child td { border-bottom: none; }
   color: var(--green-light);
 }
 
+/* ─── Sidebar Navigation Badges & Dots ───────────── */
 .nav-badge {
   margin-left: auto;
-  background: var(--red);
-  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
   font-size: 10px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 10px;
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 999px;
+  background: var(--red);
+  color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.02em;
 }
-.nav-badge.warn { background: var(--amber); color: #000; }
-.nav-badge.info { background: var(--blue); }
+
+.nav-badge.warn {
+  background: var(--amber);
+  color: #000000 !important;
+}
+
+.nav-badge.info {
+  background: #2563eb;
+  color: #ffffff !important;
+}
+
+.nav-badge.success {
+  background: var(--green);
+  color: #ffffff !important;
+}
+
+.nav-badge.danger {
+  background: var(--red);
+  color: #ffffff !important;
+}
+
+.nav-badge.dot,
+.nav-badge:empty {
+  min-width: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+[data-theme="cream"] .nav-badge {
+  background: #dc2626;
+  color: #ffffff !important;
+}
+
+[data-theme="cream"] .nav-badge.warn {
+  background: #f59e0b;
+  color: #000000 !important;
+}
+
+[data-theme="cream"] .nav-badge.info {
+  background: #1e3a8a;
+  color: #ffffff !important;
+}
+
+[data-theme="cream"] .nav-badge.success {
+  background: #0d9488;
+  color: #ffffff !important;
+}
+
+[data-theme="cream"] .nav-badge.danger {
+  background: #dc2626;
+  color: #ffffff !important;
+}
 
 /* ─── Topbar Actions ────────────────────────────── */
 
@@ -2674,6 +2756,1122 @@ tbody tr:last-child td { border-bottom: none; }
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+
+/* ─── Desktop Defaults for Mobile Elements ──────── */
+/* Hidden on desktop (>1024px) — no visual impact */
+.mobile-menu-btn {
+  display: none !important;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+.topbar-left-spacer {
+  /* Invisible spacer so the left slot still has min-width on desktop */
+}
+
+
+/* ═══════════════════════════════════════════════════
+   TABLET BREAKPOINT — max-width: 1024px
+   Sidebar becomes a slide-out drawer overlay.
+   Topbar switches from absolute-center to flow layout.
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+  /* --- Layout: sidebar no longer pushes content --- */
+  .app-layout {
+    flex-direction: column;
+  }
+
+  /* --- Sidebar: off-screen drawer --- */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.4);
+  }
+
+  /* --- Backdrop overlay behind drawer --- */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .sidebar-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* --- Hamburger button: visible on tablet --- */
+  .mobile-menu-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  /* --- Main content takes full width --- */
+  .main-content {
+    width: 100%;
+    height: calc(100vh - 64px);
+    height: calc(100dvh - 64px);
+  }
+
+  /* --- Topbar: switch center from absolute to flow-based flex --- */
+  .topbar {
+    padding: 0 20px;
+    /* Topbar is already display:flex + space-between from desktop.
+       We keep that, but the center is no longer absolute. */
+  }
+
+  .topbar-left {
+    min-width: auto;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .topbar-center {
+    /* Remove absolute centering — become a normal flex child */
+    position: static;
+    transform: none;
+    /* Fill remaining space between left and right */
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    /* Keep internal centering */
+    overflow: hidden;
+  }
+
+  .topbar-center h1,
+  .topbar-center h2 {
+    font-size: 1rem;
+    /* Truncate long titles with ellipsis */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .topbar-center p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .topbar-right {
+    min-width: auto;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* --- Page content padding reduced --- */
+  .page-content {
+    padding: 24px;
+  }
+
+  /* --- Table & Bidder Comparison Responsiveness (<=1024px) --- */
+  .eval-row {
+    min-width: 680px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .table-wrap,
+  .table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* --- Landing Tablet (<=1024px) --- */
+  .landing-nav {
+    padding: 14px 28px;
+  }
+
+  .landing-scanner-grid {
+    gap: 20px;
+  }
+
+  .landing-role-grid {
+    gap: 18px;
+  }
+
+  /* --- Login Tablet (<=1024px) --- */
+  .login-left {
+    padding: 40px 32px;
+  }
+
+  .login-right {
+    padding: 32px 24px;
+  }
+
+  .login-card {
+    padding: 32px 28px;
+  }
+
+  /* --- Create Tender: Prevent nested grid compression on tablet (<=1024px) --- */
+  .form-nested-grid,
+  .grid-2 .grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- Tender Detail: Bid Row Tablet Wrap (<=1024px) --- */
+  .tender-bid-row {
+    flex-wrap: wrap !important;
+    gap: 14px !important;
+  }
+
+  .tender-bid-main {
+    flex: 1 1 240px !important;
+  }
+
+  .tender-bid-right {
+    flex-wrap: wrap;
+    gap: 12px !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   MOBILE BREAKPOINT — max-width: 768px
+   Further compaction for phone screens.
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* --- Sidebar drawer narrower on phones --- */
+  .sidebar {
+    width: 260px;
+  }
+
+  /* --- Topbar more compact --- */
+  .topbar {
+    padding: 0 14px;
+    height: 56px;
+  }
+
+  .topbar-left {
+    gap: 6px;
+  }
+
+  .topbar-right {
+    gap: 6px;
+  }
+
+  /* --- Theme pill: icon-only on mobile --- */
+  .topbar-pill-btn span {
+    display: none;
+  }
+
+  .topbar-pill-btn {
+    padding: 6px 10px;
+    min-width: auto;
+    gap: 0;
+  }
+
+  /* --- Title: smaller, with ellipsis --- */
+  .topbar-center h1,
+  .topbar-center h2 {
+    font-size: 0.88rem;
+  }
+
+  /* --- Hide subtitle on mobile to prevent collision --- */
+  .topbar-center p,
+  .topbar-center-subtitle {
+    display: none;
+  }
+
+  /* --- Main content height accounts for shorter topbar --- */
+  .main-content {
+    height: calc(100vh - 56px);
+    height: calc(100dvh - 56px);
+  }
+
+  /* --- Page content tighter padding --- */
+  .page-content {
+    padding: 16px;
+  }
+
+  .page-header {
+    margin-bottom: 20px;
+  }
+
+  .page-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .page-header p {
+    font-size: 0.8rem;
+  }
+
+  /* --- Mobile Table Scrolling & Containment (<=768px) --- */
+  .table-wrap table,
+  .table-wrapper table {
+    min-width: 580px;
+  }
+
+  .table-wrap th,
+  .table-wrapper th {
+    white-space: nowrap;
+  }
+
+  /* Ensure modal containing tables never exceeds viewport */
+  .modal-box {
+    width: calc(100vw - 28px) !important;
+    max-width: calc(100vw - 28px) !important;
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
+
+  /* --- Landing Mobile (<=768px) --- */
+  .landing-nav {
+    padding: 12px 18px;
+  }
+
+  .landing-scanner-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .landing-role-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .hero-section {
+    padding-top: 90px !important;
+    padding-bottom: 40px !important;
+    min-height: auto;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 6vw, 3rem) !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* --- Login Mobile (<=768px) --- */
+  .login-wrapper {
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .login-left {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 28px 20px 20px;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    justify-content: flex-start;
+  }
+
+  [data-theme="cream"] .login-left {
+    border-right: none !important;
+    border-bottom: 1px solid #e5dcb8 !important;
+  }
+
+  .login-left .login-features,
+  .login-left .login-sih-box {
+    display: none;
+  }
+
+  .login-left .login-heading {
+    font-size: 1.5rem !important;
+    margin-bottom: 10px !important;
+  }
+
+  .login-left .login-desc {
+    margin-bottom: 16px !important;
+    font-size: 0.875rem !important;
+  }
+
+  .login-left .logo-badge {
+    margin-bottom: 20px !important;
+  }
+
+  .login-left .btn-ghost {
+    margin-bottom: 20px !important;
+  }
+
+  .login-right {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 24px 16px 40px;
+  }
+
+  .login-card {
+    max-width: 440px;
+    width: 100%;
+    padding: 28px 20px;
+    box-sizing: border-box;
+  }
+
+  /* --- Contractor Dashboard: Bid Rows Wrapping (<=768px) --- */
+  .contractor-bid-row {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    padding: 14px 16px !important;
+  }
+
+  .contractor-bid-info {
+    flex: 1 1 200px !important;
+  }
+
+  .contractor-bid-indicators {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+
+  /* --- Tender Detail: Bid Rows Mobile Layout (<=768px) --- */
+  .tender-bid-row {
+    padding: 16px 14px !important;
+  }
+
+  .tender-bid-main {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  .tender-bid-right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px !important;
+  }
+
+  .tender-bid-analysis {
+    gap: 12px !important;
+    flex-wrap: wrap;
+  }
+
+  /* --- AIChat: stack sidebar below chat panel (<=768px) --- */
+  .aichat-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- MyBids: stack bid row on mobile (<=768px) --- */
+  .my-bid-row {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  .my-bid-main {
+    flex: 1 1 100% !important;
+    width: 100%;
+  }
+
+  .my-bid-meta {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px !important;
+  }
+
+  /* --- BidAnalysis: officer decision buttons wrap (<=768px) --- */
+  .officer-decision-btns {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .officer-decision-btns .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  /* --- DocumentVerifier: toolbar collapses vertically (<=768px) --- */
+  .verifier-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .verifier-toolbar-left {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+
+  .verifier-toolbar-right {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .verifier-search-box {
+    width: 100% !important;
+  }
+
+  .doc-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+  }
+
+  /* --- Part 9: ProviderTenders card wrap (<=768px) --- */
+  .provider-tender-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .provider-tender-action {
+    align-self: flex-start;
+    width: auto;
+  }
+
+  .provider-tender-meta {
+    gap: 12px !important;
+  }
+
+  /* --- Part 9: BrowseTenders action buttons stack (<=768px) --- */
+  .browse-tender-actions {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: stretch !important;
+    width: 100%;
+    gap: 8px !important;
+  }
+
+  .browse-tender-actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* --- Part 9: UploadDocuments filter wrap (<=768px) --- */
+  .upload-filter-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .upload-filter-pills {
+    flex-wrap: wrap;
+    gap: 6px !important;
+  }
+
+  /* --- Part 9: ChartModal viewport containment (<=768px) --- */
+  .chart-modal-overlay {
+    padding: 12px;
+  }
+
+  .chart-modal-container {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    max-height: 90vh;
+    max-height: 90dvh;
+  }
+
+  .chart-modal-header {
+    padding: 14px 16px;
+  }
+
+  .chart-modal-body {
+    padding: 16px;
+  }
+
+  /* --- Part 9: Modal KPI grids 2-col on tablet (<=768px) --- */
+  .chart-modal-body .modal-kpi-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   TOAST MOBILE BREAKPOINT — max-width: 600px
+   Viewport-contained toast notifications.
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  #toast-container {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .toast {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .toast > span {
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .toast span {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .toast-icon {
+    flex-shrink: 0;
+  }
+
+  .toast button {
+    flex-shrink: 0;
+    min-width: 28px;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* --- Score Ring Card Mobile Stacking (<=600px) --- */
+  .score-ring-card {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 18px !important;
+    padding: 20px 16px !important;
+    text-align: left;
+  }
+
+  .score-ring-card .ring-wrap {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .score-ring-card .score-details {
+    width: 100%;
+  }
+
+  /* --- Provider Dashboard Modal Actions & Grids (<=600px) --- */
+  .modal-actions-row {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .modal-actions-row > div {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+
+  .modal-kpi-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .modal-kpi-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- Contractor Dashboard Mobile Stacking (<=600px) --- */
+  .contractor-bid-row {
+    justify-content: space-between;
+  }
+
+  .contractor-bid-info {
+    flex: 1 1 100% !important;
+    width: 100%;
+  }
+
+  .contractor-bid-indicators {
+    display: flex;
+    align-items: center;
+    gap: 10px !important;
+    flex-wrap: wrap;
+  }
+
+  .contractor-bid-badges {
+    flex-wrap: wrap;
+    gap: 6px !important;
+  }
+
+  /* --- Tender Detail Phone Stack (<=600px) --- */
+  .tender-bid-right {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  .tender-bid-analysis {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .tender-bid-action {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  /* --- AIChat: quick prompts wrap & smaller chips (<=600px) --- */
+  .quick-prompts {
+    gap: 6px !important;
+  }
+
+  .quick-chip {
+    font-size: 0.72rem !important;
+    padding: 5px 10px !important;
+  }
+
+  /* --- Settings: row label wraps, toggle stays right (<=600px) --- */
+  .settings-row {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+
+  .settings-card-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* --- MyBids: meta block stacks fully (<=600px) --- */
+  .my-bid-meta {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  /* --- DocumentVerifier: 1-column doc grid (<=600px) --- */
+  .doc-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- BidAnalysis: bid header score block stacks (<=600px) --- */
+  .bid-analysis-header-score,
+  .contractor-bid-header-score {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  /* --- Part 9: ContractorTenderView metadata tighten (<=600px) --- */
+  .ctv-metadata-row {
+    gap: 14px !important;
+    margin-top: 14px !important;
+    padding-top: 14px !important;
+  }
+
+  .ctv-req-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .ctv-cta-card {
+    padding: 28px 16px !important;
+  }
+
+  .ctv-cta-card .btn {
+    white-space: normal;
+    text-align: center;
+    padding: 12px 20px !important;
+  }
+
+  /* --- Part 9: ChartModal responsive height (<=600px) --- */
+  .chart-modal-body {
+    padding: 12px;
+  }
+
+  /* Recharts responsive containers inside modal should clamp height */
+  .chart-modal-body .recharts-responsive-container {
+    max-height: clamp(240px, 50vh, 400px) !important;
+  }
+
+  /* --- Part 9: RequirementCard touch targets (<=600px) --- */
+  .req-expand-btn {
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px !important;
+  }
+
+  /* --- Part 9: UploadDocuments action full width (<=600px) --- */
+  .upload-filter-pills .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  /* --- Part 9: Modal KPI grids 1-col on mobile (<=600px) --- */
+  .chart-modal-body .modal-kpi-grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   SMALL PHONE BREAKPOINT — max-width: 480px
+   Minimal spacing for very small screens.
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+  .sidebar {
+    width: 240px;
+  }
+
+  .topbar {
+    padding: 0 10px;
+  }
+
+  .topbar-center h1,
+  .topbar-center h2 {
+    font-size: 0.8rem;
+  }
+
+  .page-content {
+    padding: 12px;
+  }
+
+  /* --- Even smaller hamburger for tiny screens --- */
+  .mobile-menu-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Modal box tighter on small phones */
+  .modal-box {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    padding: 16px 12px;
+  }
+
+  .table-wrap table,
+  .table-wrapper table {
+    min-width: 540px;
+  }
+
+  /* --- Notification Panel Mobile Containment (<=480px) --- */
+  .notif-panel {
+    position: fixed;
+    top: 60px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 76px);
+    max-height: calc(100dvh - 76px);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+  }
+
+  .notif-panel #notif-list {
+    max-height: calc(100vh - 180px) !important;
+    max-height: calc(100dvh - 180px) !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .notif-item {
+    padding: 12px 14px;
+    min-height: 48px;
+  }
+
+  .notif-body {
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .notif-body h4 {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .notif-body p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .notif-time {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .notif-panel-header {
+    padding: 12px 14px;
+    flex-shrink: 0;
+  }
+
+  .notif-panel-mark {
+    white-space: nowrap;
+    padding: 4px 6px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .notif-panel-footer {
+    padding: 12px 14px;
+    flex-shrink: 0;
+  }
+
+  .notif-panel-footer a {
+    display: inline-block;
+    padding: 2px 0;
+    min-height: 24px;
+  }
+
+  /* --- Landing Mobile (<=480px) --- */
+  .landing-nav {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .landing-nav-actions {
+    gap: 6px !important;
+  }
+
+  .landing-nav .theme-toggle-label {
+    display: none;
+  }
+
+  .landing-theme-btn {
+    padding: 6px 8px !important;
+  }
+
+  .landing-signin-btn {
+    display: none;
+  }
+
+  .landing-launch-btn {
+    padding: 6px 12px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .hero-title {
+    font-size: 1.85rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .landing-role-grid > div {
+    padding: 20px 16px !important;
+  }
+
+  /* --- Login Mobile (<=480px) --- */
+  .login-left {
+    padding: 20px 16px 16px;
+  }
+
+  .login-left .logo-badge {
+    margin-bottom: 14px !important;
+  }
+
+  .login-left .btn-ghost {
+    margin-bottom: 14px !important;
+  }
+
+  .login-left .login-heading {
+    font-size: 1.3rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  .login-left .login-desc {
+    font-size: 0.8rem !important;
+    margin-bottom: 10px !important;
+  }
+
+  .login-right {
+    padding: 16px 12px 28px;
+  }
+
+  .login-card {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .role-selector {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .role-card {
+    padding: 10px 6px;
+  }
+
+  .role-icon-large {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+
+  .role-name {
+    font-size: 0.8rem;
+  }
+
+  .role-desc {
+    font-size: 0.65rem;
+  }
+
+  /* --- Provider Dashboard Modal Actions & Grids (<=480px) --- */
+  .modal-kpi-grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modal-actions-row {
+    flex-direction: column-reverse;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .modal-actions-row .btn,
+  .modal-actions-row > div {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal-actions-row > div .btn {
+    flex: 1;
+  }
+
+  /* --- Tender Detail Stat Chips (<=480px) --- */
+  .tender-stat-chips {
+    width: 100%;
+    gap: 8px !important;
+  }
+
+  .tender-stat-chips > div {
+    flex: 1 1 calc(33.333% - 8px);
+    min-width: 80px;
+    padding: 10px 6px !important;
+  }
+
+  .tender-bid-analysis {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+
+  .contractor-bid-row {
+    padding: 12px 14px !important;
+  }
+
+  /* --- AIChat: input area smaller on tiny screens (<=480px) --- */
+  .chat-input {
+    font-size: 0.85rem !important;
+  }
+
+  /* --- MyBids: hide arrow on tiny screens (<=480px) --- */
+  .my-bid-row > svg {
+    display: none;
+  }
+
+  /* --- Settings: save button full width (<=480px) --- */
+  .settings-save-row {
+    width: 100%;
+  }
+
+  .settings-save-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- DocumentVerifier: filter pills wrap tighter (<=480px) --- */
+  .filter-pill-group {
+    gap: 6px !important;
+  }
+
+  .filter-pill-group .btn {
+    padding: 4px 8px !important;
+    font-size: 0.74rem !important;
+  }
+
+  /* --- BidAnalysis: officer buttons stack (<=480px) --- */
+  .officer-decision-btns {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .officer-decision-btns .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- Part 9: ChartModal close icon-only (<=480px) --- */
+  .chart-modal-close-text {
+    display: none;
+  }
+
+  .chart-modal-close {
+    padding: 8px !important;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .chart-modal-overlay {
+    padding: 8px;
+  }
+
+  .chart-modal-container {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    max-height: 92vh;
+    max-height: 92dvh;
+  }
+
+  .chart-modal-header {
+    padding: 10px 12px;
+  }
+
+  .chart-modal-body {
+    padding: 10px;
+  }
+
+  /* --- Part 9: Touch target polish (<=480px) --- */
+  .req-expand-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px !important;
+  }
+
+  /* Close buttons in modals */
+  .modal-close,
+  .chart-modal-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Card action buttons minimum touch area */
+  .provider-tender-action,
+  .browse-tender-actions .btn {
+    min-height: 44px;
+    padding: 10px 14px !important;
+  }
+
+  /* --- Part 9: ContractorTenderView mobile (<=480px) --- */
+  .ctv-metadata-row {
+    flex-direction: column;
+    gap: 10px !important;
+  }
+
+  .ctv-cta-card {
+    padding: 20px 12px !important;
+  }
 }
 
 

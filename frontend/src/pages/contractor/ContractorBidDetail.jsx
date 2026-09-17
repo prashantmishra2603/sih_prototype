@@ -111,7 +111,7 @@ export default function ContractorBidDetail() {
               </div>
 
               {analysis && (
-                <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
+                <div className="contractor-bid-header-score" style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
                   <ScoreRing score={analysis.overall_score} size={100} />
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     <RiskBadge risk={analysis.risk_level} />
@@ -220,7 +220,7 @@ export default function ContractorBidDetail() {
                 <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>
                   📋 Requirement Analysis ({requirements.length} total)
                 </div>
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div className="filter-btn-group" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {['ALL', 'PASS', 'REVIEW', 'FAIL'].map(f => (
                     <button
                       key={f}

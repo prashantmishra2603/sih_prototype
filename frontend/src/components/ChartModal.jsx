@@ -43,14 +43,15 @@ export function ChartModal({ isOpen, onClose, title = 'Chart Full View', subtitl
             </div>
           </div>
           <button
-            className="btn btn-ghost btn-sm"
+            className="btn btn-ghost btn-sm chart-modal-close"
             onClick={() => {
               sound.playTap();
               onClose();
             }}
             style={{ padding: '6px 12px', gap: 6 }}
+            aria-label="Close"
           >
-            <X size={16} /> Close Full View
+            <X size={16} /><span className="chart-modal-close-text">Close Full View</span>
           </button>
         </div>
         <div className="chart-modal-body">

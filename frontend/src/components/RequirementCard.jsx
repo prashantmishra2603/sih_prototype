@@ -17,7 +17,7 @@ export function RequirementCard({ req, analysis }) {
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <ComplianceBadge status={analysis?.status || 'REVIEW'} />
           <button
-            className="btn btn-ghost btn-icon"
+            className="btn btn-ghost btn-icon req-expand-btn"
             onClick={() => setExpanded(!expanded)}
           >
             {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Eye, EyeOff, ArrowLeft, Loader, Sun, Moon } from 'lucide-react';
+import { Shield, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { login as apiLogin } from '../api/client';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import { sound } from '../utils/soundEffects';
 
 export default function Login() {
@@ -15,7 +14,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const DEMO_CREDS = {
@@ -51,27 +49,6 @@ export default function Login() {
 
   return (
     <div className="login-wrapper">
-      {/* Floating Theme Controls */}
-      <div style={{ position: 'absolute', top: 20, right: 24, zIndex: 10, display: 'flex', gap: 10, alignItems: 'center' }}>
-        <button
-          className="theme-toggle-btn"
-          onClick={toggleTheme}
-          title={theme === 'cream' ? 'Switch to Dark Theme' : 'Switch to White Cream Theme'}
-          style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
-        >
-          {theme === 'cream' ? (
-            <>
-              <Moon size={14} />
-              <span>Dark Theme</span>
-            </>
-          ) : (
-            <>
-              <Sun size={14} />
-              <span>White Cream</span>
-            </>
-          )}
-        </button>
-      </div>
       {/* Background blobs */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', width: 500, height: 500, background: '#10b981', borderRadius: '50%', filter: 'blur(150px)', opacity: 0.12, top: -200, left: -100 }} />
@@ -90,15 +67,15 @@ export default function Login() {
             <div style={{ fontSize: '0.75rem', color: 'var(--green-light)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>GeM Compliance Platform</div>
           </div>
         </div>
-        <h2 style={{ fontSize: '2rem', marginBottom: 16 }}>
+        <h2 className="login-heading" style={{ fontSize: '2rem', marginBottom: 16 }}>
           AI-Powered<br /><span className="gradient-text-green">Bid Compliance</span><br />Verification
         </h2>
-        <p style={{ maxWidth: 380, lineHeight: 1.7, marginBottom: 40 }}>
+        <p className="login-desc" style={{ maxWidth: 380, lineHeight: 1.7, marginBottom: 40 }}>
           BidCheck AI transforms hours of manual document review into
           instant, evidence-backed compliance decisions.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div className="login-features" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {[
             { icon: '✅', text: 'Every decision backed by exact evidence & page number' },
             { icon: '⚠️', text: 'Risk detection: missing docs, expired certs, conflicts' },
@@ -118,7 +95,7 @@ export default function Login() {
           ))}
         </div>
 
-        <div style={{ marginTop: 48, padding: '16px 20px', background: 'rgba(16,185,129,0.06)', borderRadius: 12, border: '1px solid rgba(16,185,129,0.2)' }}>
+        <div className="login-sih-box" style={{ marginTop: 48, padding: '16px 20px', background: 'rgba(16,185,129,0.06)', borderRadius: 12, border: '1px solid rgba(16,185,129,0.2)' }}>
           <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>SIH 2026 — Problem Statement</div>
           <div style={{ fontSize: '0.875rem', color: 'var(--green-light)', fontWeight: 600 }}>SIH26100 • GeM Portal Compliance Automation</div>
         </div>

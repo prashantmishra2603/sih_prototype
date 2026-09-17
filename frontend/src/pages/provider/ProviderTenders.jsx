@@ -53,12 +53,12 @@ export default function ProviderTenders() {
                   onClick={() => navigate(`/provider/tender/${t.id}`)}
                   whileHover={{ borderColor: 'rgba(99,179,237,0.3)' }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
+                  <div className="provider-tender-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
                     <div>
                       <span className={`badge ${t.status === 'open' ? 'status-open' : 'status-closed'}`} style={{ marginBottom: 8, display: 'inline-block' }}>{t.status.toUpperCase()}</span>
                       <h3 style={{ fontSize: '1.05rem', marginBottom: 4 }}>{t.title}</h3>
                       <p style={{ fontSize: '0.85rem', marginBottom: 10 }}>{t.description?.slice(0, 120)}...</p>
-                      <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+                      <div className="provider-tender-meta" style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
                         {[{ label: 'GeM ID', value: t.gem_id }, { label: 'Value', value: t.value }, { label: 'Deadline', value: t.deadline }, { label: 'Requirements', value: t.requirements?.length }].map(item => (
                           <div key={item.label}>
                             <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.label}</div>
@@ -67,7 +67,7 @@ export default function ProviderTenders() {
                         ))}
                       </div>
                     </div>
-                    <button className="btn btn-primary btn-sm">View Bids →</button>
+                    <button className="btn btn-primary btn-sm provider-tender-action">View Bids →</button>
                   </div>
                 </motion.div>
               ))}

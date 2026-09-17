@@ -115,65 +115,69 @@ export default function MyBids() {
                   onClick={() => navigate(`/contractor/bid/${bid.id}`)}
                   whileHover={{ borderColor: 'rgba(99,179,237,0.3)' }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-                    {/* Bid Icon */}
-                    <div style={{
-                      width: 48, height: 48, borderRadius: 14, flexShrink: 0,
-                      background: 'linear-gradient(135deg, var(--blue), var(--purple))',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      <ClipboardCheck size={22} color="#fff" />
-                    </div>
+                  <div className="my-bid-row" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                    <div className="my-bid-main" style={{ display: 'flex', alignItems: 'center', gap: 16, flex: 1, minWidth: 0 }}>
+                      {/* Bid Icon */}
+                      <div style={{
+                        width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                        background: 'linear-gradient(135deg, var(--blue), var(--purple))',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        <ClipboardCheck size={22} color="#fff" />
+                      </div>
 
-                    {/* Bid Info */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: 2 }}>
-                        Bid #{bid.id.slice(-8).toUpperCase()}
-                      </div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: 4 }}>
-                        Submitted {bid.submitted_at} • {bid.documents?.length} documents
-                      </div>
-                      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        <span style={{
-                          fontSize: '0.7rem', padding: '2px 10px', borderRadius: 100, fontWeight: 700,
-                          background: bid.status === 'accepted' ? 'rgba(16,185,129,0.12)' :
-                            bid.status === 'rejected' ? 'rgba(239,68,68,0.12)' : 'rgba(245,158,11,0.12)',
-                          color: bid.status === 'accepted' ? 'var(--green)' :
-                            bid.status === 'rejected' ? 'var(--red)' : 'var(--amber)',
-                          border: `1px solid ${bid.status === 'accepted' ? 'rgba(16,185,129,0.25)' :
-                            bid.status === 'rejected' ? 'rgba(239,68,68,0.25)' : 'rgba(245,158,11,0.25)'}`,
-                          textTransform: 'uppercase',
-                        }}>
-                          {bid.status}
-                        </span>
-                        {bid.officer_decision && (
+                      {/* Bid Info */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: 2 }}>
+                          Bid #{bid.id.slice(-8).toUpperCase()}
+                        </div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: 4 }}>
+                          Submitted {bid.submitted_at} • {bid.documents?.length} documents
+                        </div>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                           <span style={{
-                            fontSize: '0.7rem', padding: '2px 10px', borderRadius: 100, fontWeight: 600,
-                            background: 'rgba(139,92,246,0.1)', color: 'var(--purple)',
-                            border: '1px solid rgba(139,92,246,0.2)',
+                            fontSize: '0.7rem', padding: '2px 10px', borderRadius: 100, fontWeight: 700,
+                            background: bid.status === 'accepted' ? 'rgba(16,185,129,0.12)' :
+                              bid.status === 'rejected' ? 'rgba(239,68,68,0.12)' : 'rgba(245,158,11,0.12)',
+                            color: bid.status === 'accepted' ? 'var(--green)' :
+                              bid.status === 'rejected' ? 'var(--red)' : 'var(--amber)',
+                            border: `1px solid ${bid.status === 'accepted' ? 'rgba(16,185,129,0.25)' :
+                              bid.status === 'rejected' ? 'rgba(239,68,68,0.25)' : 'rgba(245,158,11,0.25)'}`,
+                            textTransform: 'uppercase',
                           }}>
-                            👤 Officer: {bid.officer_decision}
+                            {bid.status}
                           </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Analysis */}
-                    {bid.analysis ? (
-                      <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <ScoreRing score={bid.analysis.overall_score} size={58} strokeWidth={5} />
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                          <RiskBadge risk={bid.analysis.risk_level} />
-                          <RecommendationBadge recommendation={bid.analysis.recommendation} />
+                          {bid.officer_decision && (
+                            <span style={{
+                              fontSize: '0.7rem', padding: '2px 10px', borderRadius: 100, fontWeight: 600,
+                              background: 'rgba(139,92,246,0.1)', color: 'var(--purple)',
+                              border: '1px solid rgba(139,92,246,0.2)',
+                            }}>
+                              👤 Officer: {bid.officer_decision}
+                            </span>
+                          )}
                         </div>
                       </div>
-                    ) : (
-                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', padding: '8px 12px', background: 'var(--bg-glass)', borderRadius: 8, border: '1px solid var(--border)' }}>
-                        ⏳ Analysis pending
-                      </div>
-                    )}
+                    </div>
 
-                    <ArrowRight size={16} color="var(--text-muted)" />
+                    <div className="my-bid-meta" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                      {/* Analysis */}
+                      {bid.analysis ? (
+                        <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+                          <ScoreRing score={bid.analysis.overall_score} size={58} strokeWidth={5} />
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                            <RiskBadge risk={bid.analysis.risk_level} />
+                            <RecommendationBadge recommendation={bid.analysis.recommendation} />
+                          </div>
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', padding: '8px 12px', background: 'var(--bg-glass)', borderRadius: 8, border: '1px solid var(--border)' }}>
+                          ⏳ Analysis pending
+                        </div>
+                      )}
+
+                      <ArrowRight size={16} color="var(--text-muted)" style={{ flexShrink: 0 }} />
+                    </div>
                   </div>
                 </motion.div>
               ))}

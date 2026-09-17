@@ -239,9 +239,9 @@ export default function UploadDocuments() {
 
                   {/* Requirements */}
                   <div className="card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
+                    <div className="upload-filter-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
                       <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Requirement Analysis</div>
-                      <div style={{ display: 'flex', gap: 6 }}>
+                      <div className="upload-filter-pills" style={{ display: 'flex', gap: 6 }}>
                         {['ALL', 'PASS', 'REVIEW', 'FAIL'].map(f => (
                           <button key={f} onClick={() => setActiveFilter(f)} className={`btn btn-sm ${activeFilter === f ? 'btn-primary' : 'btn-ghost'}`}>
                             {f}

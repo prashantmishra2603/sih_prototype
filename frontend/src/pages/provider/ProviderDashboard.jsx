@@ -636,7 +636,7 @@ export default function ProviderDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, margin: '18px 0' }}>
+                <div className="modal-kpi-grid modal-kpi-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, margin: '18px 0' }}>
                   <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 10, padding: 12, textAlign: 'center' }}>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Total Bids</div>
                     <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: 2 }}>{totalBids}</div>
@@ -703,7 +703,7 @@ export default function ProviderDashboard() {
                   </table>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="modal-actions-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
                   <button className="btn btn-ghost btn-sm" onClick={exportBidsQuickCSV} style={{ gap: 6 }}>
                     <Download size={14} /> Export Bids CSV
                   </button>
@@ -805,7 +805,7 @@ export default function ProviderDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                <div className="modal-actions-row" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
                   <button className="btn btn-ghost btn-sm" onClick={() => setActiveKpiModal(null)}>Close</button>
                   <button className="btn btn-primary btn-sm" onClick={() => { setActiveKpiModal(null); navigate('/provider/analytics'); }}>
                     Open Analytics &amp; Audit Trail
@@ -876,7 +876,7 @@ export default function ProviderDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                <div className="modal-actions-row" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
                   <button className="btn btn-ghost btn-sm" onClick={() => setActiveKpiModal(null)}>Close</button>
                   <button className="btn btn-primary btn-sm" onClick={() => { setActiveKpiModal(null); navigate('/provider/verifier'); }}>
                     Open Document Verifier
@@ -909,7 +909,7 @@ export default function ProviderDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, margin: '16px 0' }}>
+                <div className="modal-kpi-grid modal-kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, margin: '16px 0' }}>
                   <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 10, padding: 14, textAlign: 'center' }}>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Officer Hours Saved</div>
                     <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#8b5cf6', marginTop: 2 }}>68 Hours</div>
@@ -942,7 +942,7 @@ export default function ProviderDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="modal-actions-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
                   <button className="btn btn-primary btn-sm" onClick={handleExport} style={{ gap: 6 }}>
                     <Download size={14} /> Download Executive Report
                   </button>

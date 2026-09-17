@@ -111,7 +111,7 @@ export default function BidAnalysis() {
                 )}
               </div>
               {analysis && (
-                <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
+                <div className="bid-analysis-header-score" style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
                   <ScoreRing score={analysis.overall_score} size={100} />
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     <RiskBadge risk={analysis.risk_level} />
@@ -208,7 +208,7 @@ export default function BidAnalysis() {
               <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>
                 📋 Requirements Analysis ({requirements.length} total)
               </div>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div className="filter-btn-group" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {['ALL', 'PASS', 'REVIEW', 'FAIL'].map(f => (
                   <button
                     key={f}
@@ -255,7 +255,7 @@ export default function BidAnalysis() {
               {decided ? (
                 <div className="alert alert-success">✅ Decision recorded successfully.</div>
               ) : (
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <div className="officer-decision-btns" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   <button className="btn btn-success" onClick={() => handleDecision('ACCEPTED')} disabled={deciding}>
                     <ThumbsUp size={15} /> Accept Bid
                   </button>

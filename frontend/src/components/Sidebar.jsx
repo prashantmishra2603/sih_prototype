@@ -1,4 +1,5 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { sound } from '../utils/soundEffects';
 import {
@@ -27,69 +28,112 @@ const contractorNav = [
 export function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navItems = user?.role === 'provider' ? providerNav : contractorNav;
   const initials = user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'RK';
 
+  // Toggle/close drawer via events and keyboard
+  useEffect(() => {
+    const handleToggle = () => setMobileOpen(prev => !prev);
+    const handleClose = () => setMobileOpen(false);
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+
+    window.addEventListener('toggle-mobile-sidebar', handleToggle);
+    window.addEventListener('close-mobile-sidebar', handleClose);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('toggle-mobile-sidebar', handleToggle);
+      window.removeEventListener('close-mobile-sidebar', handleClose);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // Automatically close mobile drawer when route changes
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  const handleNavClick = () => {
+    setMobileOpen(false);
+  };
+
   const handleLogout = () => {
+    setMobileOpen(false);
     logout();
     navigate('/');
   };
 
   return (
-    <aside className="sidebar">
+    <>
+      {/* Mobile Backdrop Overlay (only active on <= 768px when drawer open) */}
       <div
-        className="sidebar-logo"
-        onClick={() => {
-          sound.playTap();
-          navigate('/');
-        }}
-        style={{ cursor: 'pointer' }}
-        title="Go to Home / Landing Page"
-      >
-        <div className="logo-badge">
-          <div className="logo-icon">🛡️</div>
-          <div>
-            <div className="logo-text">BidCheck AI</div>
-            <div className="logo-sub">Compliance Platform</div>
+        className={`sidebar-backdrop ${mobileOpen ? 'open' : ''}`}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
+
+      <aside className={`sidebar ${mobileOpen ? 'mobile-open' : ''}`}>
+        <div
+          className="sidebar-logo"
+          onClick={() => {
+            sound.playTap();
+            setMobileOpen(false);
+            navigate('/');
+          }}
+          style={{ cursor: 'pointer' }}
+          title="Go to Home / Landing Page"
+        >
+          <div className="logo-badge">
+            <div className="logo-icon">🛡️</div>
+            <div>
+              <div className="logo-text">BidCheck AI</div>
+              <div className="logo-sub">Compliance Platform</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <nav className="sidebar-nav">
-        <div className="nav-section-title">
-          {user?.role === 'provider' ? 'Procurement Main' : 'Bidder Portal'}
-        </div>
-        {navItems.map(({ to, icon: Icon, label, badge, badgeClass }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-          >
-            <Icon size={16} />
-            <span style={{ flex: 1 }}>{label}</span>
-            {badge && <span className={`nav-badge ${badgeClass || ''}`}>{badge}</span>}
-          </NavLink>
-        ))}
+        <nav className="sidebar-nav">
+          <div className="nav-section-title">
+            {user?.role === 'provider' ? 'Procurement Main' : 'Bidder Portal'}
+          </div>
+          {navItems.map(({ to, icon: Icon, label, badge, badgeClass }) => (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={handleNavClick}
+              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            >
+              <Icon size={16} />
+              <span style={{ flex: 1 }}>{label}</span>
+              {badge && <span className={`nav-badge ${badgeClass || ''}`}>{badge}</span>}
+            </NavLink>
+          ))}
 
-        <div style={{ height: 1, background: 'var(--border)', margin: '16px 0' }} />
+          <div style={{ height: 1, background: 'var(--border)', margin: '16px 0' }} />
 
-        <div className="nav-section-title">System</div>
-        <div className="nav-item" onClick={handleLogout} style={{ cursor: 'pointer' }}>
-          <LogOut size={16} />
-          <span style={{ flex: 1 }}>Sign Out</span>
-        </div>
-      </nav>
+          <div className="nav-section-title">System</div>
+          <div className="nav-item" onClick={handleLogout} style={{ cursor: 'pointer' }}>
+            <LogOut size={16} />
+            <span style={{ flex: 1 }}>Sign Out</span>
+          </div>
+        </nav>
 
-      <div className="sidebar-footer">
-        <div className="user-info">
-          <div className="user-avatar">{initials}</div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div className="user-name truncate">{user?.name || 'Rajesh Kumar'}</div>
-            <div className="user-role">{user?.role === 'provider' ? '🏛️ Officer · MoD' : '🏢 Contractor'}</div>
+        <div className="sidebar-footer">
+          <div className="user-info">
+            <div className="user-avatar">{initials}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="user-name truncate">{user?.name || 'Rajesh Kumar'}</div>
+              <div className="user-role">{user?.role === 'provider' ? '🏛️ Officer · MoD' : '🏢 Contractor'}</div>
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }
+

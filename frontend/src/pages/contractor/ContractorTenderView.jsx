@@ -84,7 +84,7 @@ export default function ContractorTenderView() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 24, marginTop: 20, flexWrap: 'wrap', paddingTop: 20, borderTop: '1px solid var(--border)' }}>
+            <div className="ctv-metadata-row" style={{ display: 'flex', gap: 24, marginTop: 20, flexWrap: 'wrap', paddingTop: 20, borderTop: '1px solid var(--border)' }}>
               {[
                 { icon: Building, label: 'Department', value: tender?.department },
                 { icon: Tag, label: 'Category', value: tender?.category },
@@ -128,7 +128,7 @@ export default function ContractorTenderView() {
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: colors.text }} />
                     {category} ({reqs.length})
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
+                  <div className="ctv-req-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
                     {reqs.map((req, i) => (
                       <motion.div
                         key={req.id}
@@ -168,7 +168,7 @@ export default function ContractorTenderView() {
 
           {/* CTA */}
           <motion.div
-            className="card"
+            className="card ctv-cta-card"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -191,7 +191,7 @@ export default function ContractorTenderView() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Upload size={16} /> Upload Documents & Run AI Check
+              <Upload size={16} /> Upload Documents & Run AI Check
             </motion.button>
           </motion.div>
         </div>

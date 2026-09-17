@@ -64,7 +64,7 @@ export default function BrowseTenders() {
                   whileHover={{ borderColor: 'rgba(99,179,237,0.3)', transform: 'translateY(-2px)' }}
                   onClick={() => navigate(`/contractor/tender/${tender.id}`)}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
+                  <div className="browse-tender-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', gap: 8, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
                         <span className="badge status-open">OPEN</span>
@@ -88,7 +88,7 @@ export default function BrowseTenders() {
                         ))}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-end' }}>
+                    <div className="browse-tender-actions" style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-end' }}>
                       <button className="btn btn-secondary btn-sm" onClick={e => { e.stopPropagation(); navigate(`/contractor/tender/${tender.id}`); }}>
                         View Requirements
                       </button>

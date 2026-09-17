@@ -96,7 +96,7 @@ export default function AIChat() {
             </button>
           </div>
 
-          <div className="grid-2" style={{ alignItems: 'start' }}>
+          <div className="grid-2 aichat-grid" style={{ alignItems: 'start' }}>
             <div>
               <div className="chat-container">
                 <div className="chat-header">

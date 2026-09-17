@@ -29,9 +29,9 @@ export default function Landing() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div className="landing-nav-actions" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <button
-            className="theme-toggle-btn"
+            className="theme-toggle-btn landing-theme-btn"
             onClick={toggleTheme}
             title={theme === 'cream' ? 'Switch to Dark Theme' : 'Switch to White Cream Theme'}
             style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
@@ -39,19 +39,19 @@ export default function Landing() {
             {theme === 'cream' ? (
               <>
                 <Moon size={14} />
-                <span>Dark Theme</span>
+                <span className="theme-toggle-label">Dark Theme</span>
               </>
             ) : (
               <>
                 <Sun size={14} />
-                <span>White Cream</span>
+                <span className="theme-toggle-label">White Cream</span>
               </>
             )}
           </button>
 
-          <Link to="/login" className="btn btn-ghost" style={{ fontWeight: 600 }}>Sign In</Link>
-          <button className="btn glowing-btn-emerald" onClick={() => { sound.playTap(); navigate('/login'); }} style={{ padding: '8px 20px', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
-            Launch Portal <ArrowRight size={15} />
+          <Link to="/login" className="btn btn-ghost landing-signin-btn" style={{ fontWeight: 600 }}>Sign In</Link>
+          <button className="btn glowing-btn-emerald landing-launch-btn" onClick={() => { sound.playTap(); navigate('/login'); }} style={{ padding: '8px 20px', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span className="landing-launch-text">Launch Portal</span> <ArrowRight size={15} />
           </button>
         </div>
       </nav>
@@ -138,7 +138,7 @@ export default function Landing() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 30, alignItems: 'center' }}>
+        <div className="landing-scanner-grid">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -178,7 +178,7 @@ export default function Landing() {
           <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Choose Your Portal</h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+        <div className="landing-role-grid">
           <motion.div
             className="tagada-glass"
             style={{ padding: 32, cursor: 'pointer' }}

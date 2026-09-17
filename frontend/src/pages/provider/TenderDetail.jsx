@@ -63,7 +63,7 @@ export default function TenderDetail() {
                 <h2 style={{ fontSize: '1.5rem', marginBottom: 6 }}>{tender?.title}</h2>
                 <p style={{ fontSize: '0.875rem', maxWidth: 600 }}>{tender?.description}</p>
               </div>
-              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <div className="tender-stat-chips" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <div style={{ textAlign: 'center', padding: '12px 20px', background: 'var(--bg-glass)', borderRadius: 12, border: '1px solid var(--border)' }}>
                   <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--blue-light)' }}>{bids.length}</div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Total Bids</div>
@@ -131,6 +131,7 @@ export default function TenderDetail() {
                 {bids.map((bid, i) => (
                   <motion.div
                     key={bid.id}
+                    className="tender-bid-row"
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.08 }}
@@ -143,39 +144,41 @@ export default function TenderDetail() {
                     onClick={() => navigate(`/provider/bid/${bid.id}`)}
                     whileHover={{ borderColor: 'rgba(99,179,237,0.3)', backgroundColor: 'rgba(255,255,255,0.04)' }}
                   >
-                    <div style={{
-                      width: 44, height: 44, borderRadius: 12,
-                      background: 'linear-gradient(135deg, var(--blue), var(--purple))',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontWeight: 800, fontSize: '1rem', color: '#fff', flexShrink: 0,
-                    }}>
-                      {bid.contractor_name[0]}
+                    <div className="tender-bid-main" style={{ display: 'flex', alignItems: 'center', gap: 16, flex: 1, minWidth: 0 }}>
+                      <div style={{
+                        width: 44, height: 44, borderRadius: 12,
+                        background: 'linear-gradient(135deg, var(--blue), var(--purple))',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontWeight: 800, fontSize: '1rem', color: '#fff', flexShrink: 0,
+                      }}>
+                        {bid.contractor_name[0]}
+                      </div>
+
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{bid.contractor_name}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Submitted {bid.submitted_at} • {bid.documents?.length} documents</div>
+                      </div>
                     </div>
 
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{bid.contractor_name}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Submitted {bid.submitted_at} • {bid.documents?.length} documents</div>
-                    </div>
-
-                    {bid.analysis && (
-                      <>
-                        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+                    <div className="tender-bid-right" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                      {bid.analysis && (
+                        <div className="tender-bid-analysis" style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
                           <ScoreRing score={bid.analysis.overall_score} size={56} strokeWidth={5} />
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          <div className="tender-bid-badges" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                             <RiskBadge risk={bid.analysis.risk_level} />
                             <RecommendationBadge recommendation={bid.analysis.recommendation} />
                           </div>
-                          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                          <div className="tender-bid-counts" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
                             <span style={{ color: 'var(--green)', fontWeight: 700 }}>{bid.analysis.pass_count}✅ </span>
                             <span style={{ color: 'var(--amber)', fontWeight: 700 }}>{bid.analysis.review_count}⚠ </span>
                             <span style={{ color: 'var(--red)', fontWeight: 700 }}>{bid.analysis.fail_count}❌</span>
                           </div>
                         </div>
-                      </>
-                    )}
-                    <button className="btn btn-primary btn-sm" onClick={e => { e.stopPropagation(); navigate(`/provider/bid/${bid.id}`); }}>
-                      View Analysis
-                    </button>
+                      )}
+                      <button className="btn btn-primary btn-sm tender-bid-action" onClick={e => { e.stopPropagation(); navigate(`/provider/bid/${bid.id}`); }}>
+                        View Analysis
+                      </button>
+                    </div>
                   </motion.div>
                 ))}
               </div>
