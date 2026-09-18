@@ -12,13 +12,16 @@ export function ParticleBackground() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
+    const isMobile = width <= 768;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const handleResize = () => {
       if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
     class Particle {
       constructor() {
@@ -53,7 +56,11 @@ export function ParticleBackground() {
       }
     }
 
-    const particles = Array.from({ length: 65 }, () => new Particle());
+    const particleCount = isMobile ? 24 : 50;
+    const particles = Array.from({ length: particleCount }, () => new Particle());
+
+    const maxDist = 120;
+    const maxDistSq = maxDist * maxDist;
 
     const drawConnections = () => {
       const isCream = document.documentElement.getAttribute('data-theme') === 'cream';
@@ -61,14 +68,15 @@ export function ParticleBackground() {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          const distSq = dx * dx + dy * dy;
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.strokeStyle = isCream
-              ? `rgba(30, 58, 138, ${0.05 * (1 - dist / 120)})`
-              : `rgba(226, 138, 117, ${0.07 * (1 - dist / 120)})`;
+              ? `rgba(30, 58, 138, ${0.05 * (1 - dist / maxDist)})`
+              : `rgba(226, 138, 117, ${0.07 * (1 - dist / maxDist)})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }
@@ -83,14 +91,18 @@ export function ParticleBackground() {
         p.draw();
       });
       drawConnections();
-      animationFrameId = requestAnimationFrame(render);
+      if (!prefersReducedMotion) {
+        animationFrameId = requestAnimationFrame(render);
+      }
     };
 
     render();
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 
@@ -102,6 +114,8 @@ export function ParticleBackground() {
         inset: 0,
         pointerEvents: 'none',
         zIndex: 0,
+        transform: 'translateZ(0)',
+        willChange: 'transform',
       }}
     />
   );

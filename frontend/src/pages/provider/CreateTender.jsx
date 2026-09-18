@@ -60,7 +60,7 @@ export default function CreateTender() {
 
           <div className="grid-2">
             <div>
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <form id="create-tender-form" onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                 <div className="card">
                   <div style={{ fontWeight: 700, marginBottom: 20, fontSize: '0.95rem' }}>📋 Tender Details</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -120,7 +120,7 @@ export default function CreateTender() {
 
                 <motion.button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-primary create-tender-desktop-btn"
                   style={{ justifyContent: 'center', padding: '14px' }}
                   disabled={loading || success}
                   whileHover={{ scale: loading ? 1 : 1.02 }}
@@ -168,6 +168,18 @@ export default function CreateTender() {
                 </div>
               )}
             </div>
+
+            {/* Mobile Create Tender CTA under AI Extracted Requirements */}
+            <motion.button
+              type="submit"
+              form="create-tender-form"
+              className="btn btn-primary create-tender-mobile-btn"
+              style={{ justifyContent: 'center', padding: '14px' }}
+              disabled={loading || success}
+              whileHover={{ scale: loading ? 1 : 1.02 }}
+            >
+              {success ? '✅ Tender Created!' : loading ? <><div className="spinner" /> Creating...</> : <><PlusCircle size={16} /> Create Tender</>}
+            </motion.button>
           </div>
         </div>
       </div>

@@ -112,7 +112,7 @@ export default function Landing() {
         </motion.div>
 
         {/* STATS STRIP */}
-        <div style={{ maxWidth: 1000, margin: '40px auto 0', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, padding: '0 20px' }}>
+        <div className="landing-stats-strip" style={{ maxWidth: 1000, margin: '40px auto 0', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, padding: '0 20px' }}>
           {stats.map((s, i) => (
             <motion.div
               key={i}
