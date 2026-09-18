@@ -4201,8 +4201,7 @@ tbody tr:last-child td { border-bottom: none; }
     border-bottom: 1px solid #e5dcb8 !important;
   }
 
-  .login-left .login-features,
-  .login-left .login-sih-box {
+  .login-left .login-features {
     display: none !important;
   }
 

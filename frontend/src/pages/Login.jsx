@@ -94,11 +94,6 @@ export default function Login() {
             </motion.div>
           ))}
         </div>
-
-        <div className="login-sih-box" style={{ marginTop: 48, padding: '16px 20px', background: 'rgba(16,185,129,0.06)', borderRadius: 12, border: '1px solid rgba(16,185,129,0.2)' }}>
-          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>SIH 2026 — Problem Statement</div>
-          <div style={{ fontSize: '0.875rem', color: 'var(--green-light)', fontWeight: 600 }}>SIH26100 • GeM Portal Compliance Automation</div>
-        </div>
       </div>
 
       {/* Right Panel — Login Form */}

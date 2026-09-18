@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, CheckCircle2, FileSearch, BarChart3, ArrowRight, Zap, Eye, Users, Sparkles, Award, Sun, Moon } from 'lucide-react';
+import { Shield, CheckCircle2, FileSearch, BarChart3, ArrowRight, Eye, Users, Sparkles, Award, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { sound } from '../utils/soundEffects';
 
@@ -70,10 +70,6 @@ export default function Landing() {
           transition={{ duration: 0.6 }}
           style={{ maxWidth: 850, textAlign: 'center', margin: '0 auto' }}
         >
-          <div className="shimmer-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 30, fontSize: '0.8rem', fontWeight: 700, color: 'var(--green-light)', marginBottom: 20 }}>
-            <Zap size={14} color="#10b981" /> SIH 2026 Procurement Engine • Problem SIH26100
-          </div>
-
           <h1 className="hero-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.2rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: 18 }}>
             Instant AI Tender <br />
             <span className="gradient-text">Verification &amp; Compliance</span>
@@ -216,7 +212,7 @@ export default function Landing() {
           <span style={{ fontSize: '1rem', fontWeight: 800, fontFamily: 'Space Grotesk' }}>BidCheck <span className="gradient-text">AI</span></span>
         </div>
         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-          SIH 2026 • GeM Compliance &amp; Verification Platform
+          GeM Compliance &amp; Verification Platform
         </div>
       </footer>
     </div>
